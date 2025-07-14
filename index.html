@@ -10,45 +10,62 @@
 
   <!-- Header -->
   <header class="bg-indigo-900 p-4 flex justify-between items-center">
-    <div class="flex items-center space-x-6">
-      <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400">SceneCraft AI</a>
-      <nav class="space-x-4">
-        <a href="#" id="navHome2" class="hover:underline">Home</a>
-        <a href="#" id="navAbout" class="hover:underline">About</a>
-        <a href="#" class="opacity-50" title="Coming Soon">Editor</a>
-        <a href="#" class="opacity-50" title="Coming Soon">Script</a>
-        <a href="#" class="opacity-50" title="Coming Soon">How It Works</a>
-        <a href="#" class="opacity-50" title="Coming Soon">Pricing</a>
-      </nav>
-    </div>
+    <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400">SceneCraft AI</a>
+    <nav class="flex space-x-4">
+      <a href="#" id="navAnalyzer" class="hover:underline">Scene Analyzer</a>
+      <a href="#" id="navEditor" class="hover:underline">Scene Editor</a>
+      <a href="#" id="navWriter" class="hover:underline">Full Script Writer</a>
+      <a href="#" id="navHow" class="hover:underline">How it Works</a>
+      <a href="#" id="navPricing" class="hover:underline">Pricing</a>
+    </nav>
     <button id="navLogin" class="bg-yellow-400 text-indigo-900 py-2 px-4 rounded-lg">Log In / Sign Up</button>
   </header>
 
   <!-- Views -->
   <main class="flex-grow relative">
 
-    <!-- Home -->
-    <section id="view-home" class="p-6 flex flex-col items-center text-center space-y-6">
-      <h1 class="text-5xl font-extrabold text-yellow-300">Transform Your Scenes with AI</h1>
-      <p class="max-w-2xl">Paste any scene and get cinematic feedback.</p>
-      <button id="ctaAnalyzer" class="bg-yellow-400 text-indigo-900 py-3 px-6 rounded-xl">Try the Scene Analyzer</button>
-      <button id="ctaTerms" class="underline text-indigo-200">Terms & Conditions</button>
-    </section>
-
-    <!-- About -->
-    <section id="view-about" class="hidden p-6 max-w-3xl mx-auto space-y-4 text-left">
-      <h2 class="text-4xl font-bold text-yellow-400">About SceneCraft AI</h2>
-      <p>AI-driven cinematic consultation: pacing, stakes, subtext, visuals.</p>
+    <!-- Home Narrative -->
+    <section id="view-home" class="p-8 max-w-4xl mx-auto space-y-8">
+      <h1 class="text-5xl font-extrabold text-yellow-300 text-center">
+        Welcome to SceneCraft AI
+      </h1>
+      <p class="text-lg leading-relaxed">
+        SceneCraft AI is your ultimate cinematic storytelling partner. Powered by cutting-edge 
+        AI and crafted by filmmakers, it transforms raw scenes into rich, actionable insights. 
+        Whether you’re a screenwriter polishing a dialogue-heavy moment or a director exploring 
+        visual dynamics, SceneCraft lights the way.
+      </p>
+      <!-- Visual placeholder -->
+      <div class="bg-indigo-700 h-48 rounded-lg flex items-center justify-center text-indigo-300">
+        [Hero Visual / Illustration]
+      </div>
+      <h2 class="text-3xl font-semibold text-yellow-300">What We Offer</h2>
       <ul class="list-disc list-inside space-y-2">
-        <li>Master scene rhythm</li>
-        <li>Deepen character stakes</li>
-        <li>Enhance dialogue subtext</li>
-        <li>Visual & camerawork nudges</li>
+        <li><strong>Scene Analyzer:</strong> Deep-dive feedback on pacing, stakes, subtext, and cinematography.</li>
+        <li><strong>Scene Editor:</strong> (Coming Soon) AI-assisted rewriting & refining of your scenes.</li>
+        <li><strong>Full Script Writer:</strong> (Coming Soon) From concept to screenplay with genre templates.</li>
+        <li><strong>How it Works:</strong> Video walkthroughs, step-by-step demos, and best-practice guides.</li>
+        <li><strong>Pricing:</strong> Flexible plans for hobbyists, pros, and studios—scale as you grow.</li>
       </ul>
-      <p>Save work & unlock more—coming soon.</p>
+      <!-- Feature showcase placeholders -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div class="bg-indigo-700 p-4 rounded-lg">
+          <h3 class="font-semibold text-xl text-yellow-300">Interactive Dashboard</h3>
+          <p class="mt-2">Save, compare, and export your analyses. Track progress over time.</p>
+        </div>
+        <div class="bg-indigo-700 p-4 rounded-lg">
+          <h3 class="font-semibold text-xl text-yellow-300">Collaborative Workflows</h3>
+          <p class="mt-2">Invite team members, comment in-line, and version-control your drafts.</p>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <button id="ctaAnalyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow">
+          Try the Scene Analyzer
+        </button>
+      </div>
     </section>
 
-    <!-- Analyzer -->
+    <!-- Scene Analyzer -->
     <section id="view-analyzer" class="hidden p-6 flex flex-col items-center space-y-4">
       <h2 class="text-3xl font-bold text-yellow-300">Scene Analyzer</h2>
       <textarea id="sceneInput" rows="6" class="w-full max-w-3xl p-4 bg-indigo-900 rounded-lg" placeholder="Paste your scene here..."></textarea>
@@ -61,14 +78,48 @@
       <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
     </section>
 
+    <!-- Scene Editor (Coming Soon) -->
+    <section id="view-editor" class="hidden p-6 text-center text-gray-200">
+      <h2 class="text-3xl font-bold text-yellow-300">Scene Editor</h2>
+      <p class="mt-4">AI-powered rewriting and polishing—coming soon.</p>
+    </section>
+
+    <!-- Full Script Writer (Coming Soon) -->
+    <section id="view-writer" class="hidden p-6 text-center text-gray-200">
+      <h2 class="text-3xl font-bold text-yellow-300">Full Script Writer</h2>
+      <p class="mt-4">Generate and refine entire screenplays—coming soon.</p>
+    </section>
+
+    <!-- How It Works -->
+    <section id="view-how" class="hidden p-6 max-w-3xl mx-auto space-y-4 text-gray-200">
+      <h2 class="text-3xl font-bold text-yellow-300">How It Works</h2>
+      <p>Watch our quick 2–3 minute demo video and follow the simple steps to get started:</p>
+      <!-- Video placeholder -->
+      <div class="bg-indigo-700 h-48 rounded-lg flex items-center justify-center text-indigo-300">
+        [Demo Video Embed]
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="view-pricing" class="hidden p-6 max-w-3xl mx-auto space-y-4 text-gray-200">
+      <h2 class="text-3xl font-bold text-yellow-300">Pricing</h2>
+      <table class="w-full text-left mt-4">
+        <thead><tr><th>Plan</th><th>Features</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td>Free</td><td>2 analyses/week, basic feedback</td><td>$0</td></tr>
+          <tr><td>Pro</td><td>Unlimited analyses, save & export</td><td>$9.99/mo</td></tr>
+          <tr><td>Studio</td><td>Team seats, API access</td><td>$49.99/mo</td></tr>
+        </tbody>
+      </table>
+    </section>
+
     <!-- Terms -->
     <section id="view-terms" class="hidden p-6 max-w-3xl mx-auto bg-indigo-900 text-gray-200 rounded-lg relative">
       <button id="closeTerms" class="absolute top-4 right-4 text-gray-300">✕</button>
-      <h2 class="text-3xl font-bold text-yellow-400">Terms & Conditions</h2>
+      <h2 class="text-3xl font-bold text-yellow-300">Terms & Conditions</h2>
       <h3 class="font-semibold">User Agreement</h3><p>Submit only content you own or have rights to.</p>
       <h3 class="font-semibold">Disclaimer</h3><p>Analysis is for creative guidance only.</p>
-      <h3 class="font-semibold">Usage Policy</h3>
-      <ul class="list-disc list-inside">
+      <h3 class="font-semibold">Usage Policy</h3><ul class="list-disc list-inside">
         <li>Original scenes/excerpts only</li>
         <li>No random text or rewrite prompts</li>
         <li>Not legal advice</li>
@@ -82,20 +133,24 @@
   <script>
     // View management
     const show = v => {
-      ['home','about','analyzer','terms'].forEach(x =>
+      ['home','analyzer','editor','writer','how','pricing','terms'].forEach(x =>
         document.getElementById('view-'+x).classList.add('hidden')
       );
       document.getElementById('view-'+v).classList.remove('hidden');
     };
     document.getElementById('navHome').onclick = () => show('home');
     document.getElementById('navHome2').onclick = () => show('home');
-    document.getElementById('navAbout').onclick = () => show('about');
+    document.getElementById('navAnalyzer').onclick = () => show('analyzer');
+    document.getElementById('navEditor').onclick = () => show('editor');
+    document.getElementById('navWriter').onclick = () => show('writer');
+    document.getElementById('navHow').onclick = () => show('how');
+    document.getElementById('navPricing').onclick = () => show('pricing');
     document.getElementById('ctaAnalyzer').onclick = () => show('analyzer');
     document.getElementById('ctaTerms').onclick = () => show('terms');
     document.getElementById('closeTerms').onclick = () => show('home');
     document.addEventListener('keydown', e => e.key==='Escape' && show('home'));
 
-    // Analysis handler with caching and cleaned output
+    // Analysis handler (unchanged caching/cleaning)
     let lastScene = '';
     let lastResult = '';
 
@@ -105,7 +160,6 @@
       let scene  = document.getElementById('sceneInput').value.trim();
       const file = document.getElementById('sceneFile');
 
-      // reuse last result if scene unchanged
       if (scene && scene === lastScene && lastResult) {
         out.classList.remove('hidden');
         out.textContent = lastResult;
@@ -146,20 +200,9 @@
       })
       .then(async res => {
         const text = await res.text();
-        console.log('Raw response text:', text);
         let data;
-        try { data = JSON.parse(text || '{}'); }
-        catch {
-          out.textContent = `Server error ${res.status}: ${text || res.statusText}`;
-          return;
-        }
-        let analysis = '';
-        if (res.ok && data.analysis) {
-          analysis = data.analysis;
-        } else {
-          analysis = data.error || data.detail || `Error ${res.status}`;
-        }
-        // remove bullet headings and any standalone lines ending with a colon
+        try { data = JSON.parse(text || '{}'); } catch { data = {}; }
+        let analysis = res.ok && data.analysis ? data.analysis : data.error || data.detail || `Error ${res.status}`;
         const cleaned = analysis
           .split('\n')
           .filter(line => !line.trim().startsWith('•'))
