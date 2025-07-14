@@ -29,15 +29,19 @@
     <section id="view-home" class="p-8 max-w-4xl mx-auto space-y-8">
       <h1 class="text-5xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
       <p class="text-xl leading-relaxed text-gray-300">
-        Unlock the power of cinematic insight. SceneCraft AI combines advanced machine learning 
-        with filmmaker expertise to give you instant, page-to-screen feedback on your scenes.
-        Perfect your pacing, sharpen your stakes, and visualize your next shot—all in one tool.
+        SceneCraft AI is your ultimate cinematic storytelling partner. Powered by cutting-edge AI
+        and crafted by filmmakers, it transforms raw scenes into rich, actionable insights. Whether
+        you’re a screenwriter polishing a dialogue-heavy moment or a director exploring visual
+        dynamics, SceneCraft lights the way.
       </p>
+
+      <!-- Hero Illustration -->
       <img
         src="https://images.unsplash.com/photo-1590608897129-79c44746557a?auto=format&fit=crop&w=1200&q=80"
         alt="Film set with camera crew"
         class="w-full rounded-xl shadow-xl border-4 border-yellow-400"
       />
+
       <h2 class="text-3xl font-semibold text-yellow-300 pt-6">Features at a Glance</h2>
       <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-200">
         <li class="bg-gray-800 p-4 rounded-lg">
@@ -46,7 +50,7 @@
         </li>
         <li class="bg-gray-800 p-4 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Scene Editor</h3>
-          <p class="mt-2">AI-assisted rewriting and polish—coming soon.</p>
+          <p class="mt-2">AI-assisted rewriting and polishing—coming soon.</p>
         </li>
         <li class="bg-gray-800 p-4 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Full Script Writer</h3>
@@ -57,6 +61,13 @@
           <p class="mt-2">Save, compare, and share your analyses in one place.</p>
         </li>
       </ul>
+
+      <!-- Read Terms link -->
+      <div class="text-center pt-4">
+        <button id="homeTermsBtn" class="underline text-yellow-300 hover:text-yellow-400">
+          Read Terms & Conditions
+        </button>
+      </div>
     </section>
 
     <!-- Scene Analyzer -->
@@ -84,6 +95,7 @@
     <section id="view-terms" class="hidden p-8 max-w-3xl mx-auto bg-gray-900/90 text-gray-200 rounded-xl relative mt-8">
       <button id="closeTerms" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕ Close</button>
       <h2 class="text-3xl font-bold text-yellow-300 mb-4">Terms & Conditions</h2>
+
       <h3 class="font-semibold text-lg mt-4">1. User Agreement</h3>
       <p>You confirm you own or have proper rights to any content (scenes, scripts, excerpts) you submit to SceneCraft AI. By submitting, you grant us permission to analyze that content.</p>
 
@@ -114,30 +126,32 @@
 
   <script>
     // View toggling
-    const show = v => {
-      ['home','analyzer','terms'].forEach(x =>
-        document.getElementById('view-'+x).classList.add('hidden')
+    const show = name => {
+      ['home','analyzer','terms'].forEach(n =>
+        document.getElementById('view-'+n).classList.add('hidden')
       );
-      document.getElementById('view-'+v).classList.remove('hidden');
+      document.getElementById('view-'+name).classList.remove('hidden');
     };
-    // Header nav
+
+    // Nav & button bindings
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
-    // Close buttons
+    document.getElementById('homeTermsBtn').onclick = () => show('terms');
     document.getElementById('closeAnalyzer').onclick = () => {
+      // reset analyzer
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value  = '';
       document.getElementById('agreeChk').checked  = false;
       const out = document.getElementById('analysisOutput');
-      out.classList.add('hidden');
-      out.innerText = '';
+      out.classList.add('hidden'); out.innerText = '';
       show('home');
     };
-    document.getElementById('ctaTerms')?.addEventListener('click', () => show('terms'));
     document.getElementById('closeTerms').onclick = () => show('home');
-    document.addEventListener('keydown', e => { if(e.key==='Escape') show('home'); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') show('home');
+    });
 
-    // Analysis logic (unchanged caching & cleaning)
+    // Analysis logic with caching & cleaning
     let lastScene = '', lastResult = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
@@ -145,50 +159,56 @@
       let scene   = document.getElementById('sceneInput').value.trim();
       const file  = document.getElementById('sceneFile');
 
-      if(scene && scene===lastScene && lastResult){
-        out.classList.remove('hidden'); out.textContent=lastResult; return;
+      if (scene && scene === lastScene && lastResult) {
+        out.classList.remove('hidden'); out.textContent = lastResult; return;
       }
-
-      out.classList.add('hidden'); out.innerText='';
-      if(!agree) return alert('Please accept Terms & Conditions.');
-      if(!scene && file.files.length){
-        file.files[0].text().then(txt=>{
+      out.classList.add('hidden'); out.innerText = '';
+      if (!agree) return alert('Please accept Terms & Conditions.');
+      if (!scene && file.files.length) {
+        file.files[0].text().then(txt => {
           scene = txt.trim();
-          if(scene===lastScene && lastResult){
-            out.classList.remove('hidden'); out.textContent=lastResult; return;
+          if (scene === lastScene && lastResult) {
+            out.classList.remove('hidden'); out.textContent = lastResult; return;
           }
-          doAnalyze(scene,out);
+          doAnalyze(scene, out);
         });
         return;
       }
-      if(scene.length<10) return alert('Paste or upload at least 10 characters.');
-      doAnalyze(scene,out);
+      if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
+      doAnalyze(scene, out);
     };
 
-    function doAnalyze(scene, out){
+    function doAnalyze(scene, out) {
       out.classList.remove('hidden');
-      out.innerHTML='<p class="text-yellow-300">Analyzing...</p>';
-      fetch('https://scenecraft-ai-backend.onrender.com/analyze',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-user-agreement':'true'},
-        body:JSON.stringify({scene,save:false})
+      out.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
+      fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-agreement': 'true'
+        },
+        body: JSON.stringify({ scene, save: false })
       })
-      .then(async res=>{
-        const text=await res.text();
-        let data; try{data=JSON.parse(text||'{}')}catch{data={}} 
-        let analysis = res.ok&&data.analysis?data.analysis:data.error||data.detail||`Error ${res.status}`;
+      .then(async res => {
+        const text = await res.text();
+        let data; try { data = JSON.parse(text||'{}') } catch { data = {} }
+        let analysis = res.ok && data.analysis
+          ? data.analysis
+          : data.error || data.detail || `Error ${res.status}`;
+        // clean out bullets/headings
         const cleaned = analysis
           .split('\n')
-          .filter(l=>!l.trim().startsWith('•'))
-          .filter(l=>!/^[^:]+:\s*$/.test(l.trim()))
-          .join('\n').trim();
-        out.textContent=cleaned;
-        lastScene=scene; lastResult=cleaned;
+          .filter(l => !l.trim().startsWith('•'))
+          .filter(l => !/^[^:]+:\s*$/.test(l.trim()))
+          .join('\n')
+          .trim();
+        out.textContent = cleaned;
+        lastScene = scene; lastResult = cleaned;
       })
-      .catch(e=>{ out.textContent='Network error: '+e.message });
+      .catch(e => out.textContent = 'Network error: ' + e.message);
     }
 
-    // Start on Home
+    // Show home initially
     show('home');
   </script>
 </body>
