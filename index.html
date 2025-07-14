@@ -163,7 +163,7 @@
       }
     });
 
-    // Scene analysis
+        // Scene analysis (no auth required for unlimited free)
     document.getElementById('analyzeBtn').onclick = async () => {
       const agree = document.getElementById('agreeChk').checked;
       const output = document.getElementById('analysisOutput');
@@ -178,18 +178,10 @@
       output.classList.remove('hidden');
       output.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
 
-      const user = auth.currentUser;
-      if (!user) { alert('Please sign in first.'); return; }
-      const token = await user.getIdToken();
-
       try {
         const res = await fetch('https://api.scenecraft-ai.com/analyze', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            'x-user-agreement': 'true'
-          },
+          headers: { 'Content-Type': 'application/json', 'x-user-agreement': 'true' },
           body: JSON.stringify({ scene, save: false })
         });
         const data = await res.json();
@@ -198,6 +190,8 @@
         output.textContent = 'Network error: ' + e.message;
       }
     };
-  </script>
-</body>
-</html>
+
+    // Terms link should open full T&C without auth
+    document.querySelectorAll('a[target="_blank"]').forEach(a => {
+      // nothing to do, open in new tab
+    });
