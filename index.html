@@ -10,18 +10,16 @@
 
   <!-- Header -->
   <header class="bg-indigo-900 p-4 flex justify-between items-center text-gray-100">
-    <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400 hover:underline">SceneCraft AI</a>
-    <nav class="space-x-4">
-      <a href="#" id="navHome2" class="hover:underline">Home</a>
-      <a href="#" id="navAbout" class="hover:underline">About</a>
-      <span class="opacity-50" title="Coming Soon">Editor</span>
-      <span class="opacity-50" title="Coming Soon">Script</span>
-      <span class="opacity-50" title="Coming Soon">How It Works</span>
-      <span class="opacity-50" title="Coming Soon">Pricing</span>
-      <button id="navLogin" class="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition">
-        Log In / Sign Up
-      </button>
-    </nav>
+    <div class="flex items-center space-x-6">
+      <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400 hover:underline">SceneCraft AI</a>
+      <nav class="space-x-4">
+        <a href="#" id="navHome2" class="hover:underline">Home</a>
+        <a href="#" id="navAbout" class="hover:underline">About</a>
+        <button id="navLogin" class="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition">
+          Log In / Sign Up
+        </button>
+      </nav>
+    </div>
   </header>
 
   <!-- Views Container -->
@@ -36,24 +34,25 @@
       <button id="ctaAnalyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">
         Try the Scene Analyzer
       </button>
+      <button id="ctaTerms" class="underline text-indigo-200 mt-2">
+        Terms & Conditions
+      </button>
     </section>
 
     <!-- About View -->
     <section id="view-about" class="hidden p-6 max-w-3xl mx-auto space-y-4 text-left">
       <h2 class="text-4xl font-bold text-yellow-400">About SceneCraft AI</h2>
       <p>
-        SceneCraft AI blends cinematic expertise with cutting-edge AI to sharpen your storytelling.
-        Receive targeted insights on pacing, deepen character motivations, uncover hidden subtext,
-        and get creative prompts to visualize every frame.
+        SceneCraft AI is your cinematic storytelling partner. We analyze your scenes with expert-level insights, helping you:
       </p>
       <ul class="list-disc list-inside space-y-2">
-        <li>Optimize scene rhythm for maximum emotional punch.</li>
-        <li>Strengthen stakes and character arcs.</li>
-        <li>Layer your dialogue with powerful subtext.</li>
-        <li>Explore visual ideas to elevate your themes.</li>
+        <li><strong>Master pacing</strong> to keep viewers engaged.</li>
+        <li><strong>Deepen stakes</strong> by clarifying character goals and conflicts.</li>
+        <li><strong>Uncover subtext</strong> to enrich dialogue and emotional resonance.</li>
+        <li><strong>Visualize action</strong> with creative cinematography suggestions.</li>
       </ul>
       <p>
-        Save your work, upload full scripts, and unlock more tools—coming soon!
+        Whether you're writing for film, TV, or new media, SceneCraft AI elevates your storytelling with actionable feedback—all powered by cutting-edge AI.
       </p>
     </section>
 
@@ -66,7 +65,7 @@
 
       <label class="inline-flex items-center space-x-2">
         <input type="checkbox" id="agreeChk" class="form-checkbox h-5 w-5 text-yellow-400" />
-        <span>I agree to the <a href="/terms" target="_blank" class="underline">Terms & Conditions</a></span>
+        <span>I agree to the Terms & Conditions</span>
       </label>
 
       <button id="analyzeBtn" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 px-4 rounded-lg transition">
@@ -76,125 +75,69 @@
       <div id="analysisOutput" class="w-full max-w-3xl bg-indigo-800 p-4 rounded-lg text-gray-100 whitespace-pre-wrap hidden"></div>
     </section>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-      <div class="bg-indigo-900 p-6 rounded-lg w-full max-w-md">
-        <h3 class="text-xl font-bold text-yellow-300 mb-4 text-center">Log In / Sign Up</h3>
-        <input id="email" type="email" placeholder="Email"
-               class="w-full p-3 mb-3 bg-indigo-800 text-gray-100 rounded-md focus:outline-none" />
-        <input id="password" type="password" placeholder="Password"
-               class="w-full p-3 mb-4 bg-indigo-800 text-gray-100 rounded-md focus:outline-none" />
-        <div class="flex gap-4 mb-4">
-          <button id="signUpBtn" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg">Sign Up</button>
-          <button id="signInBtn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 py-2 rounded-lg">Sign In</button>
-        </div>
-        <div class="text-center text-indigo-300 mb-4">— or —</div>
-        <button id="googleBtn" class="w-full bg-white text-indigo-900 py-2 rounded-lg shadow hover:bg-gray-100">
-          Continue with Google
-        </button>
-        <div class="text-right mt-4">
-          <button id="closeLogin" class="text-indigo-400 hover:text-white">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <!-- Terms View -->
+    <section id="view-terms" class="hidden p-6 max-w-3xl mx-auto space-y-4 bg-indigo-900 text-gray-200 rounded-lg">
+      <h2 class="text-3xl font-bold text-yellow-400">Terms & Conditions</h2>
+      <h3 class="font-semibold">User Agreement</h3>
+      <p>By using SceneCraft AI, you agree to submit only content that you own or have rights to analyze.</p>
+      <h3 class="font-semibold">Disclaimer</h3>
+      <p>SceneCraft AI provides cinematic analysis only. You are responsible for content accuracy and legality.</p>
+      <h3 class="font-semibold">Usage Policy</h3>
+      <ul class="list-disc list-inside">
+        <li>Submit original scenes or authorized excerpts.</li>
+        <li>Do not submit random text or prompts.</li>
+        <li>Analysis is for creative insight, not legal advice.</li>
+      </ul>
+      <h3 class="font-semibold">Copyright Responsibility</h3>
+      <p>You are fully responsible for rights and permissions of submitted content. SceneCraft AI does not store or certify your ownership.</p>
+      <p class="text-sm italic">© SceneCraft AI 2025. All rights reserved.</p>
+    </section>
 
   </main>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-    import {
-      getAuth, onAuthStateChanged,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signInWithPopup, GoogleAuthProvider,
-      signOut
-    } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-
-    const cfg = {
-      apiKey: 'AIzaSyC3WTOkOzUogOvFDEIhRsN0aJ0rezDqs',
-      authDomain: 'scenecraft-ai-30fae.firebaseapp.com',
-      projectId: 'scenecraft-ai-30fae',
-      storageBucket: 'scenecraft-ai-30fae.firebasestorage.app',
-      messagingSenderId: '989462026132',
-      appId: '1:989462026132:web:07920dffac54869ed62181',
-      measurementId: 'G-SZQBPND2CN'
-    };
-    initializeApp(cfg);
-    const auth = getAuth(), gp = new GoogleAuthProvider();
-
-    // View handlers
-    const showView = viewId => {
-      ['home','about','analyzer'].forEach(id => {
-        document.getElementById('view-'+id).classList.add('hidden');
+  <script>
+    // Simple view management
+    const show = view => {
+      ['home','about','analyzer','terms'].forEach(v => {
+        document.getElementById('view-' + v).classList.add('hidden');
       });
-      document.getElementById('view-'+viewId).classList.remove('hidden');
+      document.getElementById('view-' + view).classList.remove('hidden');
     };
-    document.getElementById('navHome').onclick = () => showView('home');
-    document.getElementById('navHome2').onclick = () => showView('home');
-    document.getElementById('navAbout').onclick = () => showView('about');
-    document.getElementById('ctaAnalyzer').onclick = () => showView('analyzer');
+    // nav handlers
+    document.getElementById('navHome').onclick = () => show('home');
+    document.getElementById('navHome2').onclick = () => show('home');
+    document.getElementById('navAbout').onclick = () => show('about');
+    document.getElementById('ctaAnalyzer').onclick = () => show('analyzer');
+    document.getElementById('ctaTerms').onclick = () => show('terms');
 
-    // Login modal
-    const loginModal = document.getElementById('loginModal');
-    document.getElementById('navLogin').onclick = () => loginModal.classList.remove('hidden');
-    document.getElementById('closeLogin').onclick = () => loginModal.classList.add('hidden');
-
-    // Auth flows
-    document.getElementById('signUpBtn').onclick = () => createUserWithEmailAndPassword(
-      auth,
-      document.getElementById('email').value,
-      document.getElementById('password').value
-    ).catch(e => alert(e.message));
-    document.getElementById('signInBtn').onclick = () => signInWithEmailAndPassword(
-      auth,
-      document.getElementById('email').value,
-      document.getElementById('password').value
-    ).catch(e => alert(e.message));
-    document.getElementById('googleBtn').onclick = () => signInWithPopup(auth, gp).catch(e => alert(e.message));
-    onAuthStateChanged(auth, user => {
-      const btn = document.getElementById('navLogin');
-      if (user) {
-        btn.textContent = 'Sign Out';
-        btn.onclick = () => signOut(auth).then(() => window.location.reload());
-        loginModal.classList.add('hidden');
-      } else {
-        btn.textContent = 'Log In / Sign Up';
-        btn.onclick = () => loginModal.classList.remove('hidden');
-      }
-    });
-
-            // Analyzer action
+    // Analysis logic
     document.getElementById('analyzeBtn').onclick = async () => {
       const agree = document.getElementById('agreeChk').checked;
       const out   = document.getElementById('analysisOutput');
-      let   scene = document.getElementById('sceneInput').value.trim();
-      const file  = document.getElementById('sceneFile');
-      const ENDPOINT = 'https://scenecraft-ai-backend.onrender.com/analyze'; // adjust if needed
-
+      let scene  = document.getElementById('sceneInput').value.trim();
+      const file = document.getElementById('sceneFile');
       out.classList.add('hidden'); out.innerText = '';
-      if (!agree) return alert('Please accept Terms & Conditions.');
+      if (!agree) return alert('Please accept the Terms & Conditions.');
       if (!scene && file.files.length) scene = await file.files[0].text();
-      if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
-
+      if (scene.length < 10) return alert('Paste/upload at least 10 characters.');
       out.classList.remove('hidden');
       out.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
-
       try {
-        const res = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type':'application/json', 'x-user-agreement':'true' },
-          body: JSON.stringify({ scene, save:false })
+        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'x-user-agreement':'true' },
+          body:JSON.stringify({ scene, save:false })
         });
         const data = await res.json();
-        console.log('Response status:', res.status, 'data:', data);
-        if (res.ok && data.analysis) {
-          out.textContent = data.analysis;
-        } else if (data.error || data.detail) {
-          out.textContent = data.error || data.detail;
-        } else {
-          out.textContent = 'Unexpected response: ' + JSON.stringify(data);
-        }
-      } catch (e) {
+        if (res.ok && data.analysis) out.textContent = data.analysis;
+        else out.textContent = data.error || data.detail || `Error ${res.status}`;
+      } catch(e) {
         out.textContent = 'Network error: ' + e.message;
       }
     };
+
+    // Initial view
+    show('home');
+  </script>
+</body>
+</html>
