@@ -30,7 +30,7 @@
     <!-- Home -->
     <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
-      <p class="text-lg text-gray-300 leading-relaxed text-center mb-4">
+      <p class="text-lg text-gray-300 leading-relaxed text-center">
         SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
       </p>
 
@@ -63,7 +63,8 @@
       <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕</button>
       <h2 class="text-2xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
 
-      <textarea id="sceneInput"
+      <textarea
+        id="sceneInput"
         rows="6"
         class="w-full p-4 bg-gray-800 rounded text-gray-100"
         placeholder="Paste your scene here..."
@@ -159,7 +160,7 @@
       .then(r=>r.json())
       .then(d=>{
         let t = d.analysis||d.error||'';
-        if (!/Suggestions:/i.test(t)) t+='\n\nSuggestions:\n- (none)';
+        // strip any “Label:” prefixes
         const cleaned = t.split('\n')
           .map(l=>l.replace(/^[^:]+:\s*/, ''))
           .filter(l=>l.trim())
