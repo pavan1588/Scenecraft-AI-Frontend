@@ -103,7 +103,7 @@
   </main>
 
   <script>
-    // Simple view toggler
+    // View toggling
     const show = name => {
       ['home','analyzer'].forEach(n =>
         document.getElementById('view-'+n).classList.add('hidden')
@@ -111,7 +111,7 @@
       document.getElementById('view-'+name).classList.remove('hidden');
     };
 
-    // Nav bindings
+    // Navigation
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
 
@@ -130,7 +130,7 @@
     document.getElementById('toggleTC').onclick = () =>
       document.getElementById('tcPanel').classList.toggle('hidden');
 
-    // Analysis logic with enhanced cleaning
+    // Analysis logic with label‐stripping
     let lastScene = '', lastResult = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
@@ -174,11 +174,11 @@
         let analysis = res.ok && data.analysis
           ? data.analysis
           : data.error || data.detail || `Error ${res.status}`;
-        // strip any heading lines or markdown-style bold labels
+        // Strip out any "Label: " prefix on each line
         const cleaned = analysis
           .split('\n')
-          .filter(l => !l.trim().startsWith('•'))
-          .filter(l => !l.includes('**') && !/^[^:]+:\s*$/.test(l.trim()))
+          .map(l => l.replace(/^[^:]+:\s*/, ''))
+          .filter(l => l.trim() && !l.trim().startsWith('•'))
           .join('\n')
           .trim();
         out.textContent = cleaned;
@@ -187,7 +187,7 @@
       .catch(e => out.textContent = 'Network error: ' + e.message);
     }
 
-    // start on home
+    // Start on Home
     show('home');
   </script>
 </body>
