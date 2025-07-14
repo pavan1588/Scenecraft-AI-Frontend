@@ -34,9 +34,9 @@
         each shot with expert guidance.
       </p>
 
-      <!-- Cinematic Hero Image -->
+      <!-- Reliable Cinematic Hero Image -->
       <img
-        src="https://images.unsplash.com/photo-1570080361976-0cf23c9a3041?auto=format&fit=crop&w=1200&q=80"
+        src="https://source.unsplash.com/1200x600/?cinema,studio,camera,lighting"
         alt="Professional film camera and lighting setup"
         class="w-full h-64 rounded-xl shadow-2xl border-4 border-yellow-400 object-cover"
       />
@@ -86,13 +86,13 @@
       <!-- Embedded, fixed T&C -->
       <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded-lg max-h-48 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
-        <p><strong>1. User Agreement:</strong> You represent and warrant that you have the necessary rights to submit any content for analysis.</p>
-        <p><strong>2. Feedback Disclaimer:</strong> All insights are provided “as-is” for creative guidance only. SceneCraft AI makes no warranties regarding production results or accuracy.</p>
-        <p><strong>3. Usage Policy:</strong> Submission of unlawful, infringing, or offensive content is strictly prohibited.</p>
-        <p><strong>4. Privacy & Data:</strong> Submitted scenes are processed in-memory and not stored persistently beyond the analysis session.</p>
-        <p><strong>5. Limitation of Liability:</strong> SceneCraft AI and its affiliates shall not be liable for any direct, indirect, incidental, or consequential damages arising from use of the service.</p>
-        <p><strong>6. Legal Disclaimer:</strong> This tool does not constitute legal or financial advice. Use at your own discretion and risk.</p>
-        <p><strong>7. Updates:</strong> Continued use of the service after changes to these terms implies your acceptance.</p>
+        <p><strong>1. User Agreement:</strong> You represent and warrant that you have the rights to submit any content for analysis.</p>
+        <p><strong>2. Feedback Disclaimer:</strong> Insights are provided “as-is” for creative guidance only, without warranties.</p>
+        <p><strong>3. Usage Policy:</strong> Do not submit unlawful, infringing, or offensive content.</p>
+        <p><strong>4. Privacy & Data:</strong> Submissions are processed in-memory and not stored permanently.</p>
+        <p><strong>5. Limitation of Liability:</strong> No liability for any direct or indirect damages arising from use.</p>
+        <p><strong>6. Legal Disclaimer:</strong> This is not legal or financial advice. Use at your own discretion.</p>
+        <p><strong>7. Updates:</strong> Continued use implies acceptance of updated terms.</p>
       </div>
 
       <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">
@@ -142,39 +142,38 @@
     let lastScene = '', lastResult = '', lastSuggestions = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
-      const outWrapper = document.getElementById('analysisOutput');
-      const outResult  = document.getElementById('analysisResult');
-      const outSuggest = document.getElementById('analysisSuggestions');
+      const wrapper = document.getElementById('analysisOutput');
+      const resEl   = document.getElementById('analysisResult');
+      const sugEl   = document.getElementById('analysisSuggestions');
       let scene = document.getElementById('sceneInput').value.trim();
-      const file = document.getElementById('sceneFile');
+      const file  = document.getElementById('sceneFile');
 
       if (scene && scene === lastScene && lastResult) {
-        outResult.textContent  = lastResult;
-        outSuggest.textContent = lastSuggestions;
-        outWrapper.classList.remove('hidden');
+        resEl.textContent  = lastResult;
+        sugEl.textContent = lastSuggestions;
+        wrapper.classList.remove('hidden');
         return;
       }
-
-      outWrapper.classList.add('hidden');
-      outResult.innerText  = '';
-      outSuggest.innerText = '';
+      wrapper.classList.add('hidden');
+      resEl.innerText  = '';
+      sugEl.innerText = '';
 
       if (!agree) return alert('Please accept Terms & Conditions.');
       if (!scene && file.files.length) {
         file.files[0].text().then(txt => {
           scene = txt.trim();
           if (scene === lastScene && lastResult) {
-            outResult.textContent  = lastResult;
-            outSuggest.textContent = lastSuggestions;
-            outWrapper.classList.remove('hidden');
+            resEl.textContent  = lastResult;
+            sugEl.textContent = lastSuggestions;
+            wrapper.classList.remove('hidden');
             return;
           }
-          doAnalyze(scene, outWrapper, outResult, outSuggest);
+          doAnalyze(scene, wrapper, resEl, sugEl);
         });
         return;
       }
       if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
-      doAnalyze(scene, outWrapper, outResult, outSuggest);
+      doAnalyze(scene, wrapper, resEl, sugEl);
     };
 
     function doAnalyze(scene, wrapper, resEl, sugEl) {
@@ -195,11 +194,9 @@
         let d; try { d = JSON.parse(t||'{}') } catch { d = {} }
         let output = r.ok && d.analysis ? d.analysis : d.error||d.detail||`Error ${r.status}`;
 
-        // split on suggestions marker
         let [analysis, suggestions] = output.split(/###\s*Suggestions/i);
-        suggestions = suggestions || '';
+        suggestions = suggestions||'';
 
-        // strip labels "Anything:"
         const clean = txt => txt
           .split('\n')
           .map(l => l.replace(/^[^:]+:\s*/, ''))
@@ -216,12 +213,10 @@
         lastResult      = aClean;
         lastSuggestions = sClean;
       })
-      .catch(e => {
-        resEl.textContent = 'Network error: ' + e.message;
-      });
+      .catch(e => resEl.textContent = 'Network error: ' + e.message);
     }
 
-    // Start on home
+    // Initialize on home
     show('home');
   </script>
 </body>
