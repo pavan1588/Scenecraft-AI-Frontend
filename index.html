@@ -1,135 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Scene Analyzer – SceneCraft AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100 min-h-screen flex flex-col">
+<body class="bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100 flex flex-col min-h-screen">
 
-  <!-- Header -->
-  <header class="p-4 bg-indigo-900 flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold text-yellow-300">SceneCraft AI</a>
-    <button id="signOut" class="hover:underline text-white">Sign Out</button>
+  <!-- Header / Nav -->
+  <header class="bg-indigo-900 text-gray-100 p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-6">
+      <a href="#" data-view="home" class="text-2xl font-bold text-yellow-400 hover:underline">SceneCraft AI</a>
+      <nav class="space-x-4">
+        <a href="#" data-view="home" class="hover:underline">Home</a>
+        <a href="#" data-view="about" class="hover:underline">About</a>
+        <a href="#" data-view="analyzer" class="hover:underline">Analyzer</a>
+        <span class="opacity-50" title="Coming Soon">Editor</span>
+        <span class="opacity-50" title="Coming Soon">Script</span>
+        <span class="opacity-50" title="Coming Soon">How It Works</span>
+        <span class="opacity-50" title="Coming Soon">Pricing</span>
+      </nav>
+    </div>
+    <button id="authBtn" class="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition">Log In / Sign Up</button>
   </header>
 
-  <!-- Main -->
-  <main class="flex-grow flex flex-col items-center p-6 space-y-6">
-    <h1 class="text-3xl font-bold">Scene Analyzer</h1>
+  <!-- Main Content -->
+  <main class="flex-grow relative">
+    <!-- Home View -->
+    <section id="view-home" class="p-6 flex flex-col items-center text-center space-y-6">
+      <h1 class="text-5xl font-extrabold text-yellow-300">Sharpen Your Scenes with AI</h1>
+      <p class="max-w-2xl">
+        SceneCraft AI provides deep cinematic analysis—insights on pacing, stakes, subtext and more.
+      </p>
+      <button data-view="analyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">Try the Scene Analyzer</button>
+    </section>
 
-    <textarea id="sceneInput" 
-      rows="8"
-      placeholder="Paste your scene here..."
-      class="w-full max-w-3xl p-4 bg-indigo-900 rounded-lg text-gray-100 focus:outline-none">
-    </textarea>
+    <!-- About View -->
+    <section id="view-about" class="hidden p-6 max-w-3xl mx-auto space-y-4">
+      <h2 class="text-4xl font-bold text-yellow-400">About SceneCraft AI</h2>
+      <p>SceneCraft AI is an advanced cinematic analysis tool built to help writers and filmmakers elevate their storytelling. It offers:</p>
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>Pacing Analysis:</strong> Understand and optimize the flow of your scene.</li>
+        <li><strong>Character Stakes:</strong> Deep dive into motivations and emotional beats.</li>
+        <li><strong>Dialogue Subtext:</strong> Uncover what's left unsaid.</li>
+        <li><strong>Visual Suggestions:</strong> Cinematography ideas to amplify themes.</li>
+        <li><strong>Creative Prompts:</strong> "What if" scenarios to spark innovation.</li>
+      </ul>
+    </section>
 
-    <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-indigo-200" />
-
-    <label class="inline-flex items-center space-x-2">
-      <input type="checkbox" id="agree" class="form-checkbox h-5 w-5 text-yellow-400"/>
-      <span>I agree to the <a href="/terms" target="_blank" class="underline">Terms & Conditions</a></span>
-    </label>
-
-    <button id="analyzeBtn"
-      class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 px-4 rounded-lg">
-      Analyze
-    </button>
-
-    <div id="output"
-         class="w-full max-w-3xl bg-indigo-800 p-4 rounded-lg text-gray-100 hidden whitespace-pre-wrap">
-    </div>
+    <!-- Analyzer View -->
+    <section id="view-analyzer" class="hidden p-6 flex flex-col items-center space-y-4">
+      <h2 class="text-3xl font-bold text-yellow-300">Scene Analyzer</h2>
+      <textarea id="sceneInput" rows="6" placeholder="Paste your scene here..."
+        class="w-full max-w-3xl p-4 bg-indigo-900 text-gray-100 rounded-lg focus:outline-none"></textarea>
+      <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-indigo-200" />
+      <label class="inline-flex items-center space-x-2">
+        <input type="checkbox" id="agreeChk" class="form-checkbox h-5 w-5 text-yellow-400" />
+        <span>I agree to the <a href="/terms" target="_blank" class="underline">Terms & Conditions</a></span>
+      </label>
+      <button id="analyzeBtn" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 px-4 rounded-lg transition">Analyze</button>
+      <div id="analysisOutput" class="w-full max-w-3xl bg-indigo-800 text-gray-100 p-4 rounded-lg whitespace-pre-wrap hidden"></div>
+    </section>
   </main>
 
+  <!-- Auth Modal -->
+  <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-indigo-900 p-6 rounded-lg w-full max-w-md">
+      <h3 class="text-xl font-bold text-yellow-300 mb-4 text-center">Log In / Sign Up</h3>
+      <input id="email" type="email" placeholder="Email"
+             class="w-full p-3 mb-3 bg-indigo-800 text-gray-100 rounded-md focus:outline-none" />
+      <input id="password" type="password" placeholder="Password"
+             class="w-full p-3 mb-4 bg-indigo-800 text-gray-100 rounded-md focus:outline-none" />
+      <div class="flex gap-4 mb-4">
+        <button id="signUpBtn" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg">Sign Up</button>
+        <button id="signInBtn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 py-2 rounded-lg">Sign In</button>
+      </div>
+      <div class="text-center text-indigo-300 mb-4">— or —</div>
+      <button id="googleBtn" class="w-full bg-white text-indigo-900 py-2 rounded-lg shadow hover:bg-gray-100">Continue with Google</button>
+      <div class="text-right mt-4">
+        <button id="closeAuth" class="text-indigo-400 hover:text-white">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
     import {
       getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider,
       onAuthStateChanged,
-      signOut,
-    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+      signOut
+    } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
-    // 1) Init Firebase
+    // Initialize Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyC3WTOkOzUogOvFDEI6IhRsN0aJ0rezDqs",
-      authDomain: "scenecraft-ai-30fae.firebaseapp.com",
-      projectId: "scenecraft-ai-30fae",
-      storageBucket: "scenecraft-ai-30fae.firebasestorage.app",
-      messagingSenderId: "989462026132",
-      appId: "1:989462026132:web:07920dffac54869ed62181",
-      measurementId: "G-SZQBPND2CN"
+      apiKey: 'AIzaSyC3WTOkOzUogOvFDEI6IhRsN0aJ0rezDqs',
+      authDomain: 'scenecraft-ai-30fae.firebaseapp.com',
+      projectId: 'scenecraft-ai-30fae',
+      storageBucket: 'scenecraft-ai-30fae.firebasestorage.app',
+      messagingSenderId: '989462026132',
+      appId: '1:989462026132:web:07920dffac54869ed62181',
+      measurementId: 'G-SZQBPND2CN'
     };
     initializeApp(firebaseConfig);
     const auth = getAuth();
+    const provider = new GoogleAuthProvider();
 
-    // 2) Auth guard & sign-out
+    // View switching
+    document.querySelectorAll('a[data-view]').forEach(el => {
+      el.onclick = e => {
+        e.preventDefault();
+        const view = el.dataset.view;
+        document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('view-' + view).classList.remove('hidden');
+      };
+    });
+
+    // Auth modal
+    const authBtn = document.getElementById('authBtn');
+    const authModal = document.getElementById('authModal');
+    document.getElementById('closeAuth').onclick = () => authModal.classList.add('hidden');
+    authBtn.onclick = () => authModal.classList.remove('hidden');
+
+    // Auth flows
+    document.getElementById('signUpBtn').onclick = () =>
+      createUserWithEmailAndPassword(auth,
+        document.getElementById('email').value,
+        document.getElementById('password').value)
+      .catch(e => alert(e.message));
+
+    document.getElementById('signInBtn').onclick = () =>
+      signInWithEmailAndPassword(auth,
+        document.getElementById('email').value,
+        document.getElementById('password').value)
+      .catch(e => alert(e.message));
+
+    document.getElementById('googleBtn').onclick = () =>
+      signInWithPopup(auth, provider)
+      .catch(e => alert(e.message));
+
     onAuthStateChanged(auth, user => {
-      if (!user) {
-        location.href = "/login.html";
+      if (user) {
+        authModal.classList.add('hidden');
+        authBtn.textContent = 'Sign Out';
+        authBtn.onclick = () => signOut(auth).then(() => location.reload());
+      } else {
+        authBtn.textContent = 'Log In / Sign Up';
+        authBtn.onclick = () => authModal.classList.remove('hidden');
       }
     });
-    document.getElementById("signOut").onclick = () =>
-      signOut(auth).then(() => location.href = "/");
 
-    // 3) Helper: get idToken
-    async function getIdToken() {
+    // Scene analysis
+    document.getElementById('analyzeBtn').onclick = async () => {
+      const agree = document.getElementById('agreeChk').checked;
+      const output = document.getElementById('analysisOutput');
+      const textarea = document.getElementById('sceneInput');
+      const fileIn = document.getElementById('sceneFile');
+
+      if (!agree) { alert('Accept Terms'); return; }
+      let scene = textarea.value.trim();
+      if (!scene && fileIn.files.length) scene = await fileIn.files[0].text();
+      if (!scene) { alert('Paste or upload a scene'); return; }
+
+      output.classList.remove('hidden');
+      output.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
+
       const user = auth.currentUser;
-      if (!user) throw new Error("Please log in first.");
-      return await user.getIdToken();
-    }
-
-    // 4) Analysis handler
-    document.getElementById("analyzeBtn").onclick = async () => {
-      const txtArea   = document.getElementById("sceneInput");
-      const fileInput = document.getElementById("sceneFile");
-      const agree     = document.getElementById("agree").checked;
-      const output    = document.getElementById("output");
-
-      output.classList.add("hidden");
-      output.innerText = "";
-
-      if (!agree) {
-        alert("Please accept the Terms & Conditions before analyzing.");
-        return;
-      }
-
-      let sceneText = txtArea.value.trim();
-      if (!sceneText && fileInput.files.length) {
-        sceneText = await fileInput.files[0].text();
-      }
-      if (sceneText.length < 10) {
-        alert("Please paste or upload a longer scene.");
-        return;
-      }
-
-      // Show spinner
-      output.classList.remove("hidden");
-      output.innerHTML = `<div class="flex items-center">
-        <svg class="h-5 w-5 animate-spin mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
-        Analyzing...
-      </div>`;
+      if (!user) { alert('Please sign in first'); return; }
+      const token = await user.getIdToken();
 
       try {
-        // get token
-        const token = await getIdToken();
-
-        // call API
-        const res = await fetch("https://api.scenecraft-ai.com/analyze", {
-          method: "POST",
+        const res = await fetch('https://api.scenecraft-ai.com/analyze', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-            "x-user-agreement": "true"
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            'x-user-agreement': 'true'
           },
-          body: JSON.stringify({ scene: sceneText, save: true })
+          body: JSON.stringify({ scene, save: false })
         });
         const data = await res.json();
-        if (data.analysis) {
-          output.innerHTML = data.analysis;
-        } else {
-          output.innerText = data.error || data.detail || "Unexpected error";
-        }
-      } catch (err) {
-        output.innerText = "Error: " + err.message;
+        output.textContent = data.analysis || data.error || 'Error';
+      } catch (e) {
+        output.textContent = 'Network error: ' + e.message;
       }
     };
   </script>
