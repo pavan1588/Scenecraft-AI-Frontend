@@ -1,24 +1,21 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #1e3a8a, #4f46e5); }
-  </style>
 </head>
 <body class="bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100 min-h-screen flex flex-col">
   <!-- Header / Nav -->
   <header class="p-4 bg-indigo-900 flex justify-between items-center">
     <a href="/" class="text-2xl font-bold text-yellow-400">SceneCraft AI</a>
     <nav class="space-x-4">
-      <a href="/analyzer.html" class="hover:underline">Analyzer</a>
-      <a href="/editor.html" class="hover:underline">Editor</a>
-      <a href="/script-editor.html" class="hover:underline">Script</a>
-      <a href="/how-it-works.html" class="hover:underline">How It Works</a>
-      <a href="/pricing.html" class="hover:underline">Pricing</a>
+      <a href="#about" class="hover:underline">About</a>
+      <a href="#" onclick="alert('Coming Soon!')" class="hover:underline">Editor</a>
+      <a href="#" onclick="alert('Coming Soon!')" class="hover:underline">Script</a>
+      <a href="#" onclick="alert('Coming Soon!')" class="hover:underline">How It Works</a>
+      <a href="#" onclick="alert('Coming Soon!')" class="hover:underline">Pricing</a>
       <a href="/login.html" class="hover:underline">Log In / Sign Up</a>
     </nav>
   </header>
@@ -30,24 +27,23 @@
     <section class="space-y-4">
       <h1 class="text-5xl font-extrabold text-yellow-300">Sharpen Your Scenes with AI</h1>
       <p class="max-w-xl mx-auto">
-        SceneCraft AI provides deep cinematic analysis—insights on pacing, stakes, subtext and more—powered by a state-of-the-art AI cinematic consultant.
+        SceneCraft AI provides deep cinematic analysis—insights on pacing, stakes, subtext and more.
       </p>
-      <a href="/login.html"
-         class="inline-block bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">
+      <a href="#analyzer" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition" onclick="location.href='/analyzer.html'">
         Try the Scene Analyzer
       </a>
     </section>
 
     <!-- About Section -->
-    <section class="bg-indigo-900 p-8 rounded-xl max-w-3xl text-left shadow-lg">
+    <section id="about" class="bg-indigo-900 p-8 rounded-xl max-w-3xl text-left shadow-lg">
       <h2 class="text-3xl font-bold text-yellow-400 mb-4">About SceneCraft AI</h2>
       <p class="mb-2">
         SceneCraft AI is designed for screenwriters, filmmakers, and storytellers who want sharper, more compelling scenes.
       </p>
       <ul class="list-disc list-inside space-y-2">
-        <li><strong>Cinematic Insights:</strong> Get detailed feedback on your scene’s pacing, character stakes, and visual language.</li>
-        <li><strong>Expert Guidance:</strong> Leverage best practices from global cinema to elevate your storytelling.</li>
-        <li><strong>Creative Prompts:</strong> Spark new ideas with “what if” suggestions to deepen your narrative impact.</li>
+        <li><strong>Cinematic Insights:</strong> Detailed feedback on pacing, stakes, and subtext.</li>
+        <li><strong>Expert Guidance:</strong> Best practices from global cinema.</li>
+        <li><strong>Creative Prompts:</strong> "What if" ideas to inspire deeper narratives.</li>
       </ul>
     </section>
 
@@ -56,5 +52,49 @@
       <p class="text-indigo-200 italic">Ready to transform your writing? Sign up now or continue with Google to get started.</p>
     </section>
   </main>
+</body>
+</html>
+
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Log In / Sign Up – SceneCraft AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100 min-h-screen flex flex-col">
+  <header class="p-4 bg-indigo-900 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold text-yellow-400">SceneCraft AI</a>
+  </header>
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="bg-indigo-900 p-8 rounded-lg shadow-lg w-full max-w-md space-y-6">
+      <h1 class="text-2xl font-bold text-yellow-400 text-center">Create or Log In</h1>
+      <input id="email" type="email" placeholder="Email"
+             class="w-full p-3 rounded-md bg-indigo-800 text-gray-100 focus:outline-none" />
+      <input id="password" type="password" placeholder="Password"
+             class="w-full p-3 rounded-md bg-indigo-800 text-gray-100 focus:outline-none" />
+      <div class="flex gap-4">
+        <button id="signUpBtn" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg">Sign Up</button>
+        <button id="signInBtn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 py-2 rounded-lg">Sign In</button>
+      </div>
+      <div class="text-center text-indigo-300">— or —</div>
+      <button id="googleBtn" class="w-full bg-white text-indigo-900 py-2 rounded-lg shadow hover:bg-gray-100">Continue with Google</button>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    const firebaseConfig = { apiKey: "AIzaSyC3WTOkOzUogOvFDEI6IhRsN0aJ0rezDqs", authDomain: "scenecraft-ai-30fae.firebaseapp.com", projectId: "scenecraft-ai-30fae", storageBucket: "scenecraft-ai-30fae.firebasestorage.app", messagingSenderId: "989462026132", appId: "1:989462026132:web:07920dffac54869ed62181", measurementId: "G-SZQBPND2CN" };
+    initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    const emailEl = document.getElementById("email"), passEl = document.getElementById("password");
+    document.getElementById("signUpBtn").onclick = () => createUserWithEmailAndPassword(auth, emailEl.value, passEl.value).catch(e => alert(e.message));
+    document.getElementById("signInBtn").onclick = () => signInWithEmailAndPassword(auth, emailEl.value, passEl.value).catch(e => alert(e.message));
+    document.getElementById("googleBtn").onclick = () => signInWithPopup(auth, provider).catch(e => alert(e.message));
+    onAuthStateChanged(auth, user => user && (window.location = "/analyzer.html"));
+  </script>
 </body>
 </html>
