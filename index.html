@@ -28,41 +28,40 @@
     <section id="view-home" class="p-6 max-w-4xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
       <p class="text-lg text-gray-300 leading-relaxed text-center">
-        SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft 
-        to deliver instant, actionable feedback on your scenes.
+        SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
       </p>
 
-      <!-- Cinematic Hero Image -->
+      <!-- Reliable Narrow Banner -->
       <img
-        src="https://placeimg.com/640/150/tech"
-        alt="Cinema lighting and camera gear"
-        class="w-full h-24 rounded-lg shadow-lg border-2 border-yellow-400"
+        src="https://via.placeholder.com/1200x150.png?text=SceneCraft+AI+Cinema+Tech"
+        alt="Cinema camera and lighting gear"
+        class="w-full h-20 rounded-lg shadow-lg border-2 border-yellow-400 object-fill"
       />
 
       <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-gray-800 p-4 rounded-lg">
           <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
-          <p class="mt-1 text-gray-200">Deep insights on pacing, stakes, dialogue, subtext, and visual grammar.</p>
+          <p class="mt-1 text-gray-200">Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Scene Editor</h3>
-          <p class="mt-1 text-gray-200">(Coming Soon) AI-assisted rewriting and polishing.</p>
+          <p class="mt-1 text-gray-200">(Coming Soon) AI-assisted rewriting and refinement.</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Full Script Writer</h3>
-          <p class="mt-1 text-gray-200">(Coming Soon) End-to-end screenplay generation.</p>
+          <p class="mt-1 text-gray-200">(Coming Soon) Craft entire screenplays with smart structure and style guidance.</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Collaborative Dashboard</h3>
-          <p class="mt-1 text-gray-200">Save, compare, and export analyses with your team.</p>
+          <p class="mt-1 text-gray-200">Save, compare, and export your analyses in one intuitive interface.</p>
         </div>
       </div>
     </section>
 
     <!-- Scene Analyzer -->
     <section id="view-analyzer" class="hidden p-6 max-w-3xl mx-auto bg-gray-900/80 rounded-lg space-y-4 mt-6 relative">
-      <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕ Close</button>
+      <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕</button>
       <h2 class="text-2xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
 
       <textarea
@@ -82,28 +81,27 @@
         </label>
       </div>
 
-      <!-- T&C Panel -->
+      <!-- Terms & Conditions Panel -->
       <div id="tcPanel" class="hidden bg-gray-800 p-3 rounded max-h-40 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
-        <p><strong>User Agreement:</strong> You confirm you hold all rights to the content you submit for analysis.</p>
-        <p><strong>Disclaimer:</strong> Feedback is provided strictly for creative guidance “as-is.” No warranties regarding production outcomes.</p>
-        <p><strong>Restrictions:</strong> Illegal, infringing or offensive submissions are prohibited.</p>
-        <p><strong>Privacy:</strong> All inputs are processed transiently and not stored beyond the session.</p>
-        <p><strong>Liability:</strong> SceneCraft AI and affiliates disclaim all liability for damages arising from use.</p>
-        <p><strong>Legal Advice:</strong> This service does not constitute legal or financial advice. Use at your own risk.</p>
-        <p><strong>Updates:</strong> Continued use implies acceptance of revised terms.</p>
+        <p><strong>User Agreement:</strong> You affirm you hold all rights to any content you submit.</p>
+        <p><strong>Disclaimer:</strong> All feedback is provided “as-is” for creative guidance; no warranties regarding production outcomes.</p>
+        <p><strong>Restrictions:</strong> Submission of unlawful, infringing, or offensive content is prohibited.</p>
+        <p><strong>Privacy:</strong> Inputs are processed transiently and not retained beyond the session.</p>
+        <p><strong>Liability:</strong> SceneCraft AI and affiliates disclaim all liability for any damages arising from use.</p>
+        <p><strong>Legal Disclaimer:</strong> This service does not constitute legal, financial, or professional advice. Use at your own risk.</p>
+        <p><strong>Updates:</strong> Continued use implies acceptance of updated terms.</p>
+        <p class="mt-2 text-xs text-gray-500">&copy; 2025 SceneCraft AI. All rights reserved.</p>
       </div>
 
       <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-2 rounded font-semibold">
         Analyze
       </button>
 
-      <!-- Unified Output Box -->
+      <!-- Unified Analysis & Suggestions Box -->
       <div id="analysisOutput" class="hidden bg-gray-800 p-4 rounded mt-4 space-y-3">
-        <h3 class="font-semibold text-yellow-300">Analysis</h3>
+        <h3 class="font-semibold text-yellow-300">Analysis & Suggestions</h3>
         <pre id="analysisResult" class="whitespace-pre-wrap text-gray-100"></pre>
-        <h3 class="font-semibold text-yellow-300">Suggestions</h3>
-        <pre id="analysisSuggestions" class="whitespace-pre-wrap text-gray-100"></pre>
       </div>
     </section>
 
@@ -118,7 +116,7 @@
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
 
-    // Close & reset analyzer
+    // Reset analyzer
     document.getElementById('closeAnalyzer').onclick = () => {
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value  = '';
@@ -126,7 +124,6 @@
       document.getElementById('tcPanel').classList.add('hidden');
       document.getElementById('analysisOutput').classList.add('hidden');
       document.getElementById('analysisResult').innerText = '';
-      document.getElementById('analysisSuggestions').innerText = '';
       show('home');
     };
 
@@ -135,56 +132,53 @@
       document.getElementById('tcPanel').classList.toggle('hidden');
 
     // Analysis logic
-    let lastScene = '', lastAnal='', lastSug='';
+    let lastScene = '', lastOutput = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
-      const sceneEl = document.getElementById('sceneInput');
-      const fileEl  = document.getElementById('sceneFile');
-      const scene = sceneEl.value.trim();
+      let scene = document.getElementById('sceneInput').value.trim();
       if (!agree) return alert('Please accept Terms & Conditions.');
-      if (!scene && fileEl.files.length) {
-        return fileEl.files[0].text().then(txt => runAnalysis(txt.trim()));
+      if (!scene && document.getElementById('sceneFile').files.length) {
+        return document.getElementById('sceneFile').files[0].text().then(txt => analyze(txt.trim()));
       }
-      runAnalysis(scene);
+      analyze(scene);
     };
-
-    function runAnalysis(scene) {
-      if (scene.length < 10) return alert('Enter at least 10 characters.');
-      const outBox = document.getElementById('analysisOutput');
-      const resEl  = document.getElementById('analysisResult');
-      const sugEl  = document.getElementById('analysisSuggestions');
-
-      if (scene===lastScene && lastAnal) {
-        resEl.innerText = lastAnal;
-        sugEl.innerText = lastSug;
-        outBox.classList.remove('hidden');
+    function analyze(scene) {
+      if (scene.length < 10) return alert('Please enter at least 10 characters.');
+      const out = document.getElementById('analysisOutput');
+      const res = document.getElementById('analysisResult');
+      if (scene === lastScene && lastOutput) {
+        res.innerText = lastOutput;
+        out.classList.remove('hidden');
         return;
       }
+      res.innerText = 'Analyzing...';
+      out.classList.remove('hidden');
 
-      resEl.innerText = 'Analyzing...'; sugEl.innerText='';
-      outBox.classList.remove('hidden');
-
-      fetch('https://scenecraft-ai-backend.onrender.com/analyze',{
+      fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
         method:'POST',
-        headers:{'Content-Type':'application/json','x-user-agreement':'true'},
+        headers: {'Content-Type':'application/json','x-user-agreement':'true'},
         body: JSON.stringify({ scene, save:false })
       })
       .then(r=>r.json())
       .then(d=>{
-        let t = d.analysis||d.error||'';
-        let [a,s=''] = t.split(/###\s*Suggestions/i);
-        const clean = str => str.split('\n')
+        let text = d.analysis || d.error || '';
+        // combine analysis + suggestions
+        if (!/Suggestions:/i.test(text)) {
+          text += "\n\nSuggestions:\n- (No additional suggestions)";
+        }
+        // strip any labels
+        const cleaned = text.split('\n')
           .map(l=>l.replace(/^[^:]+:\s*/, ''))
-          .filter(l=>l.trim() && !l.trim().startsWith('•'))
+          .filter(l=>l.trim())
           .join('\n').trim();
-        lastScene=scene; lastAnal=clean(a); lastSug=clean(s);
-        resEl.innerText = lastAnal;
-        sugEl.innerText = lastSug;
+        lastScene = scene;
+        lastOutput = cleaned;
+        res.innerText = cleaned;
       })
-      .catch(e=>{ resEl.innerText='Network error: '+e.message; });
+      .catch(e=> res.innerText = 'Network error: '+e.message);
     }
 
-    // Start on home
+    // Init
     show('home');
   </script>
 </body>
