@@ -25,8 +25,12 @@
       <label class="inline-flex items-center">
         <input type="checkbox" id="agreeCheckbox" class="form-checkbox h-5 w-5 text-yellow-400 bg-indigo-700">
         <span class="ml-2 text-sm text-indigo-100">I agree to the
-          <a href="https://screencraft-backend.onrender.com/terms" target="_blank" class="text-yellow-300 underline">Terms & Conditions</a>
+          <a href="https://scenecraft-backend.onrender.com/terms" target="_blank" class="text-yellow-300 underline">Terms & Conditions</a>
         </span>
+      </label>
+      <label class="inline-flex items-center">
+        <input type="checkbox" id="saveCheckbox" class="form-checkbox h-5 w-5 text-yellow-400 bg-indigo-700">
+        <span class="ml-2 text-sm text-indigo-100">Save this analysis to my Dashboard</span>
       </label>
     </div>
 
@@ -41,10 +45,11 @@
     document.getElementById('analyzeBtn').onclick = submitScene;
 
     async function submitScene() {
-      const scene = document.getElementById('sceneInput').value.trim();
-      const token = document.getElementById('tokenInput').value.trim();
-      const agreed = document.getElementById('agreeCheckbox').checked;
-      const output = document.getElementById('output');
+      const scene   = document.getElementById('sceneInput').value.trim();
+      const token   = document.getElementById('tokenInput').value.trim();
+      const agreed  = document.getElementById('agreeCheckbox').checked;
+      const saveOpt = document.getElementById('saveCheckbox').checked;
+      const output  = document.getElementById('output');
 
       if (scene === lastScene && lastResult) {
         output.innerHTML = lastResult;
@@ -59,7 +64,6 @@
         return;
       }
 
-      // Show spinner
       output.innerHTML = '<div class="flex items-center text-yellow-300">' +
                          '<svg class="h-5 w-5 animate-spin mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">' +
                          '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>' +
@@ -68,21 +72,20 @@
       output.classList.remove('hidden');
 
       try {
-        const res = await fetch('https://scenecraft-AI-backend.onrender.com/analyze', {
+        const res = await fetch('https://scenecraft-backend.onrender.com/analyze', {
           method: 'POST',
           headers: {
             'Content-Type':'application/json',
             'Authorization':'Bearer ' + token,
             'x-user-agreement':'true'
           },
-          body: JSON.stringify({scene})
+          body: JSON.stringify({ scene, save: saveOpt })
         });
         const data = await res.json();
         let htmlContent;
         if (data.analysis) {
           htmlContent = '<strong class="text-yellow-300">Analysis:</strong><br>' + data.analysis +
                         '<br><em class="text-xs text-indigo-200">' + (data.notice||'') + '</em>';
-          // Add CTA without icons
           htmlContent += '<div class="mt-4 p-4 bg-yellow-400 text-indigo-900 rounded-lg shadow-md"><strong>Ready for more?</strong> <a href="/signup" class="underline">AI Scene Editor</a> and <a href="/signup" class="underline">Full Script Assistant →</a></div>';
         } else {
           htmlContent = '❌ ' + (data.error||data.detail||'Unexpected error.');
