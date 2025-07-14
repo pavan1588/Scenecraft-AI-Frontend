@@ -10,16 +10,20 @@
 
   <!-- Header -->
   <header class="bg-gray-900/90 backdrop-blur sticky top-0 z-20">
-    <div class="max-w-4xl mx-auto flex items-center justify-between p-4">
-      <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400">SceneCraft AI</a>
-      <nav class="flex space-x-4 text-md">
+    <div class="max-w-6xl mx-auto flex items-center p-4">
+      <!-- Logo -->
+      <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400 mr-8">SceneCraft AI</a>
+      <!-- Nav links -->
+      <nav class="flex space-x-6 flex-1">
         <a href="#" id="navAnalyzer" class="text-yellow-300 border-b-2 border-yellow-300 pb-1">Scene Analyzer</a>
         <a href="#" class="hover:text-yellow-300">Scene Editor</a>
         <a href="#" class="hover:text-yellow-300">Full Script Writer</a>
         <a href="#" class="hover:text-yellow-300">How it Works</a>
         <a href="#" class="hover:text-yellow-300">Pricing</a>
       </nav>
-      <button id="navLogin" class="bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg">
+      <!-- Auth button -->
+      <button id="navLogin"
+        class="ml-8 bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg whitespace-nowrap">
         Log In / Sign Up
       </button>
     </div>
@@ -34,12 +38,14 @@
         SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
       </p>
 
-      <!-- Reliable Cinematic Banner -->
-      <img
-        src="https://source.unsplash.com/640x150/?camera,film,studio"
-        alt="Cinema camera and lighting gear"
-        class="w-full h-20 rounded-lg shadow-lg border-2 border-yellow-400 object-cover"
-      />
+      <!-- Banner with fallback frame -->
+      <div class="w-full h-20 bg-gray-700 rounded-lg shadow-lg border-2 border-yellow-400 overflow-hidden">
+        <img
+          src="https://source.unsplash.com/640x150/?camera,film,studio"
+          alt="Cinema camera and lighting gear"
+          class="w-full h-full object-contain"
+        />
+      </div>
 
       <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -67,8 +73,7 @@
       <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕</button>
       <h2 class="text-2xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
 
-      <textarea
-        id="sceneInput"
+      <textarea id="sceneInput"
         rows="5"
         class="w-full p-3 bg-gray-800 rounded text-gray-100"
         placeholder="Paste your scene here..."
@@ -84,7 +89,7 @@
         </label>
       </div>
 
-      <!-- Terms & Conditions Panel -->
+      <!-- T&C Panel -->
       <div id="tcPanel" class="hidden bg-gray-800 p-3 rounded max-h-40 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
         <p class="mb-2"><strong>User Agreement:</strong> You affirm you hold all rights to any content you submit.</p>
@@ -111,15 +116,13 @@
   </main>
 
   <script>
-    // View toggler
     const show = v => {
-      ['home','analyzer'].forEach(n => document.getElementById('view-'+n).classList.add('hidden'));
+      ['home','analyzer'].forEach(n=>document.getElementById('view-'+n).classList.add('hidden'));
       document.getElementById('view-'+v).classList.remove('hidden');
     };
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
 
-    // Reset analyzer
     document.getElementById('closeAnalyzer').onclick = () => {
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value  = '';
@@ -130,11 +133,9 @@
       show('home');
     };
 
-    // Toggle T&C
     document.getElementById('toggleTC').onclick = () =>
       document.getElementById('tcPanel').classList.toggle('hidden');
 
-    // Analysis logic
     let lastScene='', lastOutput='';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
@@ -184,7 +185,6 @@
         resBox.appendChild(para);
       });
     }
-    // Init
     show('home');
   </script>
 </body>
