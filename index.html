@@ -163,12 +163,13 @@
       }
     });
 
-        // Analyzer action
+            // Analyzer action
     document.getElementById('analyzeBtn').onclick = async () => {
       const agree = document.getElementById('agreeChk').checked;
       const out   = document.getElementById('analysisOutput');
       let   scene = document.getElementById('sceneInput').value.trim();
       const file  = document.getElementById('sceneFile');
+      const ENDPOINT = 'https://scenecraft-ai-backend.onrender.com/analyze'; // adjust if needed
 
       out.classList.add('hidden'); out.innerText = '';
       if (!agree) return alert('Please accept Terms & Conditions.');
@@ -179,17 +180,19 @@
       out.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
 
       try {
-        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+        const res = await fetch(ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-user-agreement': 'true' },
-          body: JSON.stringify({ scene, save: false })
+          headers: { 'Content-Type':'application/json', 'x-user-agreement':'true' },
+          body: JSON.stringify({ scene, save:false })
         });
         const data = await res.json();
+        console.log('Response status:', res.status, 'data:', data);
         if (res.ok && data.analysis) {
           out.textContent = data.analysis;
+        } else if (data.error || data.detail) {
+          out.textContent = data.error || data.detail;
         } else {
-          // show error or detail
-          out.textContent = data.error || data.detail || `Error ${res.status}: ${res.statusText}`;
+          out.textContent = 'Unexpected response: ' + JSON.stringify(data);
         }
       } catch (e) {
         out.textContent = 'Network error: ' + e.message;
