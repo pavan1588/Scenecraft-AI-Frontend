@@ -1,139 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100 min-h-screen flex flex-col">
+<body class="flex flex-col min-h-screen bg-gradient-to-r from-indigo-800 to-indigo-600 text-gray-100">
 
   <!-- Header -->
-  <header class="bg-indigo-900 p-4 flex justify-between items-center text-gray-100">
+  <header class="bg-indigo-900 p-4 flex justify-between items-center">
     <div class="flex items-center space-x-6">
-      <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400 hover:underline">SceneCraft AI</a>
+      <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400">SceneCraft AI</a>
       <nav class="space-x-4">
         <a href="#" id="navHome2" class="hover:underline">Home</a>
         <a href="#" id="navAbout" class="hover:underline">About</a>
-        <button id="navLogin" class="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition">
-          Log In / Sign Up
-        </button>
+        <a href="#" class="opacity-50" title="Coming Soon">Editor</a>
+        <a href="#" class="opacity-50" title="Coming Soon">Script</a>
+        <a href="#" class="opacity-50" title="Coming Soon">How It Works</a>
+        <a href="#" class="opacity-50" title="Coming Soon">Pricing</a>
       </nav>
     </div>
+    <button id="navLogin" class="bg-yellow-400 text-indigo-900 py-2 px-4 rounded-lg">Log In / Sign Up</button>
   </header>
 
-  <!-- Views Container -->
+  <!-- Views -->
   <main class="flex-grow relative">
 
-    <!-- Home View -->
+    <!-- Home -->
     <section id="view-home" class="p-6 flex flex-col items-center text-center space-y-6">
       <h1 class="text-5xl font-extrabold text-yellow-300">Transform Your Scenes with AI</h1>
-      <p class="max-w-2xl">
-        Paste any scene and get cinematic feedback on pacing, stakes, dialogue, and more.
-      </p>
-      <button id="ctaAnalyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">
-        Try the Scene Analyzer
-      </button>
-      <button id="ctaTerms" class="underline text-indigo-200 mt-2">
-        Terms & Conditions
-      </button>
+      <p class="max-w-2xl">Paste any scene and get cinematic feedback.</p>
+      <button id="ctaAnalyzer" class="bg-yellow-400 text-indigo-900 py-3 px-6 rounded-xl">Try the Scene Analyzer</button>
+      <button id="ctaTerms" class="underline text-indigo-200">Terms & Conditions</button>
     </section>
 
-    <!-- About View -->
+    <!-- About -->
     <section id="view-about" class="hidden p-6 max-w-3xl mx-auto space-y-4 text-left">
       <h2 class="text-4xl font-bold text-yellow-400">About SceneCraft AI</h2>
-      <p>
-        SceneCraft AI is your cinematic storytelling partner. We analyze your scenes with expert-level insights, helping you:
-      </p>
+      <p>AI‑driven cinematic consultation: pacing, stakes, subtext, visuals.</p>
       <ul class="list-disc list-inside space-y-2">
-        <li><strong>Master pacing</strong> to keep viewers engaged.</li>
-        <li><strong>Deepen stakes</strong> by clarifying character goals and conflicts.</li>
-        <li><strong>Uncover subtext</strong> to enrich dialogue and emotional resonance.</li>
-        <li><strong>Visualize action</strong> with creative cinematography suggestions.</li>
+        <li>Master scene rhythm</li>
+        <li>Deepen character stakes</li>
+        <li>Enhance dialogue subtext</li>
+        <li>Visual & camerawork nudges</li>
       </ul>
-      <p>
-        Whether you're writing for film, TV, or new media, SceneCraft AI elevates your storytelling with actionable feedback—all powered by cutting-edge AI.
-      </p>
+      <p>Save work & unlock more—coming soon.</p>
     </section>
 
-    <!-- Analyzer View -->
+    <!-- Analyzer -->
     <section id="view-analyzer" class="hidden p-6 flex flex-col items-center space-y-4">
       <h2 class="text-3xl font-bold text-yellow-300">Scene Analyzer</h2>
-      <textarea id="sceneInput" rows="6" placeholder="Paste your scene here..."
-        class="w-full max-w-3xl p-4 bg-indigo-900 text-gray-100 rounded-lg focus:outline-none"></textarea>
+      <textarea id="sceneInput" rows="6" class="w-full max-w-3xl p-4 bg-indigo-900 rounded-lg" placeholder="Paste scene..."></textarea>
       <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-indigo-200" />
-
       <label class="inline-flex items-center space-x-2">
-        <input type="checkbox" id="agreeChk" class="form-checkbox h-5 w-5 text-yellow-400" />
-        <span>I agree to the Terms & Conditions</span>
+        <input type="checkbox" id="agreeChk" class="form-checkbox" />
+        <span>Agree to Terms & Conditions</span>
       </label>
-
-      <button id="analyzeBtn" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 px-4 rounded-lg transition">
-        Analyze
-      </button>
-
-      <div id="analysisOutput" class="w-full max-w-3xl bg-indigo-800 p-4 rounded-lg text-gray-100 whitespace-pre-wrap hidden"></div>
+      <button id="analyzeBtn" class="bg-yellow-400 text-indigo-900 py-2 px-4 rounded-lg">Analyze</button>
+      <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg"></div>
     </section>
 
-    <!-- Terms View -->
-    <section id="view-terms" class="hidden p-6 max-w-3xl mx-auto space-y-4 bg-indigo-900 text-gray-200 rounded-lg">
+    <!-- Terms -->
+    <section id="view-terms" class="hidden p-6 max-w-3xl mx-auto bg-indigo-900 text-gray-200 rounded-lg relative">
+      <button id="closeTerms" class="absolute top-4 right-4 text-gray-300">✕</button>
       <h2 class="text-3xl font-bold text-yellow-400">Terms & Conditions</h2>
-      <h3 class="font-semibold">User Agreement</h3>
-      <p>By using SceneCraft AI, you agree to submit only content that you own or have rights to analyze.</p>
-      <h3 class="font-semibold">Disclaimer</h3>
-      <p>SceneCraft AI provides cinematic analysis only. You are responsible for content accuracy and legality.</p>
+      <h3 class="font-semibold">User Agreement</h3><p>Submit only content you own.</p>
+      <h3 class="font-semibold">Disclaimer</h3><p>Creative guidance only.</p>
       <h3 class="font-semibold">Usage Policy</h3>
-      <ul class="list-disc list-inside">
-        <li>Submit original scenes or authorized excerpts.</li>
-        <li>Do not submit random text or prompts.</li>
-        <li>Analysis is for creative insight, not legal advice.</li>
-      </ul>
-      <h3 class="font-semibold">Copyright Responsibility</h3>
-      <p>You are fully responsible for rights and permissions of submitted content. SceneCraft AI does not store or certify your ownership.</p>
-      <p class="text-sm italic">© SceneCraft AI 2025. All rights reserved.</p>
+      <ul class="list-disc list-inside"><li>Original scenes/excerpts only</li><li>No random text</li><li>Not legal advice</li></ul>
+      <h3 class="font-semibold">Copyright</h3><p>You retain all rights; we don’t store content.</p>
     </section>
 
   </main>
 
   <script>
-    // Simple view management
-    const show = view => {
-      ['home','about','analyzer','terms'].forEach(v => {
-        document.getElementById('view-' + v).classList.add('hidden');
-      });
-      document.getElementById('view-' + view).classList.remove('hidden');
+    // View switching
+    const show = v => {
+      ['home','about','analyzer','terms'].forEach(x => document.getElementById('view-'+x).classList.add('hidden'));
+      document.getElementById('view-'+v).classList.remove('hidden');
     };
-    // nav handlers
     document.getElementById('navHome').onclick = () => show('home');
     document.getElementById('navHome2').onclick = () => show('home');
     document.getElementById('navAbout').onclick = () => show('about');
     document.getElementById('ctaAnalyzer').onclick = () => show('analyzer');
     document.getElementById('ctaTerms').onclick = () => show('terms');
+    document.getElementById('closeTerms').onclick = () => show('home');
+    document.addEventListener('keydown', e => e.key==='Escape' && show('home'));
 
-    // Analysis logic
+    // Analyzer action
     document.getElementById('analyzeBtn').onclick = async () => {
       const agree = document.getElementById('agreeChk').checked;
       const out   = document.getElementById('analysisOutput');
       let scene  = document.getElementById('sceneInput').value.trim();
       const file = document.getElementById('sceneFile');
       out.classList.add('hidden'); out.innerText = '';
-      if (!agree) return alert('Please accept the Terms & Conditions.');
+      if (!agree) return alert('Accept Terms & Conditions');
       if (!scene && file.files.length) scene = await file.files[0].text();
-      if (scene.length < 10) return alert('Paste/upload at least 10 characters.');
-      out.classList.remove('hidden');
-      out.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
+      if (scene.length < 10) return alert('Paste/upload at least 10 chars');
+      out.classList.remove('hidden'); out.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
       try {
-        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+        const res = await fetch('/analyze', {
           method:'POST',
-          headers:{ 'Content-Type':'application/json', 'x-user-agreement':'true' },
-          body:JSON.stringify({ scene, save:false })
+          headers:{'Content-Type':'application/json','x-user-agreement':'true'},
+          body:JSON.stringify({scene,save:false})
         });
         const data = await res.json();
-        if (res.ok && data.analysis) out.textContent = data.analysis;
-        else out.textContent = data.error || data.detail || `Error ${res.status}`;
-      } catch(e) {
-        out.textContent = 'Network error: ' + e.message;
-      }
+        out.textContent = data.analysis || data.error || `Error ${res.status}`;
+      } catch(e) { out.textContent = 'Network error: '+e.message; }
     };
 
     // Initial view
