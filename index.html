@@ -58,7 +58,7 @@
         <span>Agree to Terms & Conditions</span>
       </label>
       <button id="analyzeBtn" class="bg-yellow-400 text-indigo-900 py-2 px-4 rounded-lg">Analyze</button>
-      <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg whitespace-pre-wrap"></div>
+      <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
     </section>
 
     <!-- Terms -->
@@ -159,8 +159,13 @@
         } else {
           analysis = data.error || data.detail || `Error ${res.status}`;
         }
-        // remove bullet headings
-        const cleaned = analysis.replace(/^•.*$/gm, '').trim();
+        // remove bullet headings and any standalone lines ending with a colon
+        const cleaned = analysis
+          .split('\n')
+          .filter(line => !line.trim().startsWith('•'))
+          .filter(line => !/^[^:]+:\s*$/.test(line.trim()))
+          .join('\n')
+          .trim();
         out.textContent = cleaned;
         lastScene = scene;
         lastResult = cleaned;
