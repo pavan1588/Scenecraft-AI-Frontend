@@ -9,46 +9,53 @@
     body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #1e3a8a, #4f46e5); }
   </style>
 </head>
-<body class="text-gray-100">
-  <div class="max-w-3xl mx-auto p-6 space-y-6">
+<body class="text-gray-100 relative">
+  <!-- Auth Controls in Corner -->
+  <div class="absolute top-4 right-4 space-x-2">
+    <button id="showSignupBtn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-full shadow hover:bg-green-600 transition" title="Sign up with SceneCraft">
+      Sign Up
+    </button>
+    <button id="googleSignInBtn" class="bg-white text-indigo-800 font-semibold py-2 px-4 rounded-full shadow hover:bg-gray-100 transition" title="Sign in with Google">
+      Sign in with Google
+    </button>
+    <button id="signOutBtn" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-full shadow hover:bg-red-600 transition hidden" title="Sign out">
+      Sign Out
+    </button>
+  </div>
 
-    <!-- Header -->
-    <div class="text-center">
+  <!-- Signup Form Modal -->
+  <div id="signupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-indigo-900 p-6 rounded-lg shadow-lg w-80">
+      <h2 class="text-xl text-yellow-400 mb-4">Create an Account</h2>
+      <input id="signupEmail" type="email" placeholder="Email"
+             class="w-full p-3 rounded-md bg-indigo-800 placeholder-gray-400 text-gray-100 border border-indigo-700 focus:outline-none mb-3"/>
+      <input id="signupPassword" type="password" placeholder="Password"
+             class="w-full p-3 rounded-md bg-indigo-800 placeholder-gray-400 text-gray-100 border border-indigo-700 focus:outline-none mb-4"/>
+      <button id="signupSubmitBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg mb-3 transition">
+        Register
+      </button>
+      <div class="text-center mb-3 text-indigo-200">or</div>
+      <button id="googleSignUpBtn" class="w-full bg-white text-indigo-800 font-semibold py-2 rounded-lg shadow hover:bg-gray-100 transition">
+        Sign up with Google
+      </button>
+      <button id="closeSignupBtn" class="mt-4 w-full text-sm text-indigo-400 hover:text-white">Cancel</button>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto p-6 pt-20">
+    <div class="text-center mb-8">
       <h1 class="text-4xl font-extrabold text-yellow-400 mb-2">SceneCraft AI</h1>
       <p class="text-md text-indigo-100">Cinematic Scene Analyzer &amp; Creative Mentor</p>
     </div>
 
-    <!-- Auth UI -->
-    <div id="authUI" class="flex flex-col gap-2">
-      <input id="email" type="email" placeholder="Email"
-             class="w-full p-3 rounded-md bg-indigo-900 placeholder-gray-300 text-gray-100 border border-indigo-500 focus:outline-none"/>
-      <input id="password" type="password" placeholder="Password"
-             class="w-full p-3 rounded-md bg-indigo-900 placeholder-gray-300 text-gray-100 border border-indigo-500 focus:outline-none"/>
-      <div class="flex gap-4">
-        <button id="signUpBtn"
-                class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 rounded-lg">
-          Sign Up
-        </button>
-        <button id="signInBtn"
-                class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 rounded-lg">
-          Sign In
-        </button>
-        <button id="signOutBtn" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg hidden">
-          Sign Out
-        </button>
-      </div>
-      <p id="userInfo" class="text-sm text-indigo-200"></p>
-    </div>
-
-    <!-- Analyzer UI -->
     <textarea id="sceneInput" rows="8" placeholder="Paste your scene here..."
-      class="w-full p-4 border border-indigo-500 bg-indigo-900 placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-100"></textarea>
+      class="w-full p-4 border border-indigo-500 bg-indigo-900 placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-100 mb-4"></textarea>
 
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3 mb-4">
       <label class="inline-flex items-center">
         <input type="checkbox" id="agreeCheckbox" class="form-checkbox h-5 w-5 text-yellow-400 bg-indigo-700">
         <span class="ml-2 text-sm text-indigo-100">I agree to the
-          <a href="https://api.scenecraft.ai/terms" target="_blank" class="text-yellow-300 underline">Terms & Conditions</a>
+          <a href="https://api.scenecraft-ai.com/terms" target="_blank" class="text-yellow-300 underline">Terms & Conditions</a>
         </span>
       </label>
       <label class="inline-flex items-center">
@@ -72,13 +79,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import {
       getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
       createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
       signOut,
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-    // 🔑 Your firebaseConfig (from console)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyC3WTOkOzUogOvFDEI6IhRsN0aJ0rezDqs",
       authDomain: "scenecraft-ai-30fae.firebaseapp.com",
@@ -92,85 +100,78 @@
     // Initialize Firebase
     const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     // UI elements
-    const emailEl      = document.getElementById("email");
-    const passEl       = document.getElementById("password");
-    const signUpBtn    = document.getElementById("signUpBtn");
-    const signInBtn    = document.getElementById("signInBtn");
-    const signOutBtn   = document.getElementById("signOutBtn");
-    const userInfoEl   = document.getElementById("userInfo");
-    const analyzeBtn   = document.getElementById("analyzeBtn");
-    const outputEl     = document.getElementById("output");
+    const showSignupBtn   = document.getElementById("showSignupBtn");
+    const signupForm      = document.getElementById("signupForm");
+    const closeSignupBtn  = document.getElementById("closeSignupBtn");
+    const signupEmailEl   = document.getElementById("signupEmail");
+    const signupPassEl    = document.getElementById("signupPassword");
+    const signupSubmitBtn = document.getElementById("signupSubmitBtn");
+    const googleSignUpBtn = document.getElementById("googleSignUpBtn");
+    const googleSignInBtn = document.getElementById("googleSignInBtn");
+    const signOutBtn      = document.getElementById("signOutBtn");
+    const analyzeBtn      = document.getElementById("analyzeBtn");
+    const outputEl        = document.getElementById("output");
 
-    // Auth handlers
-    signUpBtn.onclick = () =>
-      createUserWithEmailAndPassword(auth, emailEl.value, passEl.value)
-        .catch(err => alert("Sign Up Error: " + err.message));
+    // Toggle signup modal
+    showSignupBtn.onclick = () => signupForm.classList.remove("hidden");
+    closeSignupBtn.onclick = () => signupForm.classList.add("hidden");
 
-    signInBtn.onclick = () =>
-      signInWithEmailAndPassword(auth, emailEl.value, passEl.value)
-        .catch(err => alert("Sign In Error: " + err.message));
+    // Authentication flows
+    googleSignInBtn.onclick = () => signInWithPopup(auth, provider).catch(err => alert(err.message));
+    googleSignUpBtn.onclick = () => signInWithPopup(auth, provider).catch(err => alert(err.message));
+    signupSubmitBtn.onclick = () => {
+      createUserWithEmailAndPassword(auth, signupEmailEl.value, signupPassEl.value)
+        .then(() => signupForm.classList.add("hidden"))
+        .catch(err => alert(err.message));
+    };
+    signOutBtn.onclick = () => signOut(auth);
 
-    signOutBtn.onclick = () =>
-      signOut(auth);
-
-    // React to auth state changes
+    // Auth state changes
     onAuthStateChanged(auth, user => {
       if (user) {
-        userInfoEl.textContent = `Signed in as ${user.email}`;
+        showSignupBtn.classList.add("hidden");
+        googleSignInBtn.classList.add("hidden");
         signOutBtn.classList.remove("hidden");
+        signupForm.classList.add("hidden");
       } else {
-        userInfoEl.textContent = "Not signed in";
+        showSignupBtn.classList.remove("hidden");
+        googleSignInBtn.classList.remove("hidden");
         signOutBtn.classList.add("hidden");
       }
     });
 
-    // Helper to get fresh ID token
+    // Helper for token
     async function getIdToken() {
       const user = auth.currentUser;
       if (!user) throw new Error("Please sign in first.");
-      return await user.getIdToken(true);
+      return await user.getIdToken();
     }
 
-    // Analyzer logic (unchanged, except token source)
+    // Analyzer logic
     let lastScene = "", lastResult = "";
-    analyzeBtn.onclick = submitScene;
-
-    async function submitScene() {
+    analyzeBtn.onclick = async () => {
       const scene   = document.getElementById("sceneInput").value.trim();
       const agreed  = document.getElementById("agreeCheckbox").checked;
       const saveOpt = document.getElementById("saveCheckbox").checked;
-
       if (!scene || !agreed) {
         outputEl.innerText = "⚠️ Enter a scene and accept terms.";
         outputEl.classList.remove("hidden");
         return;
       }
-
       if (scene === lastScene && lastResult) {
         outputEl.innerHTML = lastResult;
         outputEl.classList.remove("hidden");
         return;
       }
-
-      outputEl.innerHTML = `<div class="flex items-center text-yellow-300">
-        <svg class="h-5 w-5 animate-spin mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-        </svg>Analyzing...</div>`;
+      outputEl.innerHTML = `<div class=\"flex items-center text-yellow-300\">Analyzing...</div>`;
       outputEl.classList.remove("hidden");
-
       let token;
+      try { token = await getIdToken(); } catch (err) { alert(err.message); return; }
       try {
-        token = await getIdToken();
-      } catch (err) {
-        alert(err.message);
-        return;
-      }
-
-      try {
-        const res = await fetch("https://scenecraft-backend.onrender.com/analyze", {
+        const res = await fetch("https://api.scenecraft-ai.com/analyze", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -180,28 +181,11 @@
           body: JSON.stringify({ scene, save: saveOpt })
         });
         const data = await res.json();
-
-        if (data.analysis) {
-          lastResult = `<strong class="text-yellow-300">Analysis:</strong><br>${data.analysis}
-            <br><em class="text-xs text-indigo-200">${data.notice||""}</em>
-            <div class="mt-4 p-4 bg-yellow-400 text-indigo-900 rounded-lg shadow-md">
-              <strong>Ready for more?</strong>
-              <a href="/signup" class="underline">AI Scene Editor</a>
-              and
-              <a href="/signup" class="underline">Full Script Assistant →</a>
-            </div>`;
-        } else {
-          lastResult = `❌ ${data.error||data.detail||"Unexpected error."}`;
-        }
-
+        lastResult = data.analysis ? `<strong>Analysis:</strong><br>${data.analysis}` : `❌ ${data.error||data.detail}`;
         outputEl.innerHTML = lastResult;
-      } catch (e) {
-        console.error(e);
-        outputEl.innerText = "❌ Network error: " + e.message;
-      }
-
+      } catch (e) { outputEl.innerText = "❌ Network error."; }
       lastScene = scene;
-    }
+    };
   </script>
 </body>
 </html>
