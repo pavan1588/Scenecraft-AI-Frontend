@@ -117,13 +117,16 @@
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
-    // View switching
-    document.querySelectorAll('a[data-view]').forEach(el => {
-      el.onclick = e => {
+        // View switching (for anchors *and* buttons)
+    document.querySelectorAll('[data-view]').forEach(el => {
+      el.addEventListener('click', e => {
         e.preventDefault();
+        const view = el.dataset.view;
+        // hide all
         document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-        document.getElementById('view-' + el.dataset.view).classList.remove('hidden');
-      };
+        // show selected
+        document.getElementById('view-' + view).classList.remove('hidden');
+      });
     });
 
     // Auth modal toggle
