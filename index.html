@@ -15,7 +15,6 @@
       <nav class="space-x-4">
         <a href="#" data-view="home" class="hover:underline">Home</a>
         <a href="#" data-view="about" class="hover:underline">About</a>
-        <a href="#" data-view="analyzer" class="hover:underline">Analyzer</a>
         <span class="opacity-50" title="Coming Soon">Editor</span>
         <span class="opacity-50" title="Coming Soon">Script</span>
         <span class="opacity-50" title="Coming Soon">How It Works</span>
@@ -29,24 +28,33 @@
   <main class="flex-grow relative">
     <!-- Home View -->
     <section id="view-home" class="p-6 flex flex-col items-center text-center space-y-6">
-      <h1 class="text-5xl font-extrabold text-yellow-300">Sharpen Your Scenes with AI</h1>
+      <h1 class="text-5xl font-extrabold text-yellow-300">Transform Your Scenes with AI</h1>
       <p class="max-w-2xl">
-        SceneCraft AI provides deep cinematic analysis—insights on pacing, stakes, subtext and more.
+        Welcome to SceneCraft AI, your personal cinematic mentor. Paste any scene and receive insightful feedback to ramp up tension, deepen character stakes, and perfect pacing.
       </p>
-      <button data-view="analyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">Try the Scene Analyzer</button>
+      <button data-view="analyzer" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-3 px-6 rounded-xl shadow transition">
+        Try the Scene Analyzer
+      </button>
     </section>
 
     <!-- About View -->
     <section id="view-about" class="hidden p-6 max-w-3xl mx-auto space-y-4">
       <h2 class="text-4xl font-bold text-yellow-400">About SceneCraft AI</h2>
-      <p>SceneCraft AI is an advanced cinematic analysis tool built to help writers and filmmakers elevate their storytelling. It offers:</p>
+      <p>
+        SceneCraft AI harnesses advanced cinematic principles and AI-driven insights to refine your storytelling craft. From pacing to subtext, our tool provides tailored guidance so every moment on the page feels vibrant and impactful.
+      </p>
+      <p>
+        Whether you’re a screenwriter, novelist, or filmmaker, SceneCraft AI helps you:
+      </p>
       <ul class="list-disc list-inside space-y-2">
-        <li><strong>Pacing Analysis:</strong> Understand and optimize the flow of your scene.</li>
-        <li><strong>Character Stakes:</strong> Deep dive into motivations and emotional beats.</li>
-        <li><strong>Dialogue Subtext:</strong> Uncover what's left unsaid.</li>
-        <li><strong>Visual Suggestions:</strong> Cinematography ideas to amplify themes.</li>
-        <li><strong>Creative Prompts:</strong> "What if" scenarios to spark innovation.</li>
+        <li>Elevate emotional beats with precise pacing advice.</li>
+        <li>Clarify character motivations for deeper engagement.</li>
+        <li>Enhance dialogue with layered subtext suggestions.</li>
+        <li>Visualize scenes with creative cinematography prompts.</li>
       </ul>
+      <p>
+        Join our community to save your analyses, upload full scripts securely, and unlock more creative tools coming soon.
+      </p>
     </section>
 
     <!-- Analyzer View -->
@@ -96,7 +104,6 @@
       signOut
     } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
-    // Initialize Firebase
     const firebaseConfig = {
       apiKey: 'AIzaSyC3WTOkOzUogOvFDEI6IhRsN0aJ0rezDqs',
       authDomain: 'scenecraft-ai-30fae.firebaseapp.com',
@@ -114,19 +121,18 @@
     document.querySelectorAll('a[data-view]').forEach(el => {
       el.onclick = e => {
         e.preventDefault();
-        const view = el.dataset.view;
         document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-        document.getElementById('view-' + view).classList.remove('hidden');
+        document.getElementById('view-' + el.dataset.view).classList.remove('hidden');
       };
     });
 
-    // Auth modal
+    // Auth modal toggle
     const authBtn = document.getElementById('authBtn');
     const authModal = document.getElementById('authModal');
     document.getElementById('closeAuth').onclick = () => authModal.classList.add('hidden');
     authBtn.onclick = () => authModal.classList.remove('hidden');
 
-    // Auth flows
+    // Firebase flows
     document.getElementById('signUpBtn').onclick = () =>
       createUserWithEmailAndPassword(auth,
         document.getElementById('email').value,
@@ -161,16 +167,16 @@
       const textarea = document.getElementById('sceneInput');
       const fileIn = document.getElementById('sceneFile');
 
-      if (!agree) { alert('Accept Terms'); return; }
+      if (!agree) { alert('Please accept the Terms & Conditions.'); return; }
       let scene = textarea.value.trim();
       if (!scene && fileIn.files.length) scene = await fileIn.files[0].text();
-      if (!scene) { alert('Paste or upload a scene'); return; }
+      if (!scene) { alert('Paste or upload a scene to analyze.'); return; }
 
       output.classList.remove('hidden');
       output.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
 
       const user = auth.currentUser;
-      if (!user) { alert('Please sign in first'); return; }
+      if (!user) { alert('Please sign in first.'); return; }
       const token = await user.getIdToken();
 
       try {
@@ -184,7 +190,7 @@
           body: JSON.stringify({ scene, save: false })
         });
         const data = await res.json();
-        output.textContent = data.analysis || data.error || 'Error';
+        output.textContent = data.analysis || data.error || 'Unexpected error';
       } catch (e) {
         output.textContent = 'Network error: ' + e.message;
       }
