@@ -95,42 +95,50 @@
     document.getElementById('closeTerms').onclick = () => show('home');
     document.addEventListener('keydown', e => e.key==='Escape' && show('home'));
 
-    // Analysis handler with JSON/text fallback
-    document.getElementById('analyzeBtn').onclick = async () => {
+    // Analysis handler with console.log and JSON/text fallback
+    document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
       const out   = document.getElementById('analysisOutput');
       let   scene = document.getElementById('sceneInput').value.trim();
       const file  = document.getElementById('sceneFile');
 
-      out.classList.add('hidden'); out.innerText = '';
+      out.classList.add('hidden');
+      out.innerText = '';
       if (!agree) return alert('Please accept Terms & Conditions.');
-      if (!scene && file.files.length) scene = await file.files[0].text();
+      if (!scene && file.files.length) {
+        file.files[0].text().then(txt => scene = txt);
+      }
       if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
 
       out.classList.remove('hidden');
       out.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
 
-      try {
-        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-user-agreement': 'true'
-          },
-          body: JSON.stringify({ scene, save: false })
-        });
+      fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-agreement': 'true'
+        },
+        body: JSON.stringify({ scene, save: false })
+      })
+      .then(async res => {
         const text = await res.text();
+        console.log('Raw response text:', text);
         let data;
         try { data = JSON.parse(text || '{}'); }
         catch {
           out.textContent = `Server error ${res.status}: ${text || res.statusText}`;
           return;
         }
-        if (res.ok && data.analysis) out.textContent = data.analysis;
-        else out.textContent = data.error || data.detail || `Error ${res.status}`;
-      } catch(e) {
+        if (res.ok && data.analysis) {
+          out.textContent = data.analysis;
+        } else {
+          out.textContent = data.error || data.detail || `Error ${res.status}`;
+        }
+      })
+      .catch(e => {
         out.textContent = 'Network error: ' + e.message;
-      }
+      });
     };
 
     // Initial view
