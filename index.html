@@ -12,6 +12,7 @@
   <header class="bg-indigo-900 p-4 flex justify-between items-center text-gray-100">
     <a href="#" id="navHome" class="text-2xl font-bold text-yellow-400 hover:underline">SceneCraft AI</a>
     <nav class="space-x-4">
+      <a href="#" id="navHome2" class="hover:underline">Home</a>
       <a href="#" id="navAbout" class="hover:underline">About</a>
       <span class="opacity-50" title="Coming Soon">Editor</span>
       <span class="opacity-50" title="Coming Soon">Script</span>
@@ -65,7 +66,7 @@
 
       <label class="inline-flex items-center space-x-2">
         <input type="checkbox" id="agreeChk" class="form-checkbox h-5 w-5 text-yellow-400" />
-        <span>I agree to the Terms & Conditions</span>
+        <span>I agree to the <a href="/terms" target="_blank" class="underline">Terms & Conditions</a></span>
       </label>
 
       <button id="analyzeBtn" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-semibold py-2 px-4 rounded-lg transition">
@@ -109,7 +110,6 @@
       signOut
     } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
-    // Firebase init
     const cfg = {
       apiKey: 'AIzaSyC3WTOkOzUogOvFDEIhRsN0aJ0rezDqs',
       authDomain: 'scenecraft-ai-30fae.firebaseapp.com',
@@ -123,55 +123,72 @@
     const auth = getAuth(), gp = new GoogleAuthProvider();
 
     // View handlers
-    const show = v => {
-      ['home','about','analyzer'].forEach(x=>document.getElementById('view-'+x).classList.add('hidden'));
-      document.getElementById('view-'+v).classList.remove('hidden');
+    const showView = viewId => {
+      ['home','about','analyzer'].forEach(id => {
+        document.getElementById('view-'+id).classList.add('hidden');
+      });
+      document.getElementById('view-'+viewId).classList.remove('hidden');
     };
-    document.getElementById('navHome').onclick = ()=>show('home');
-    document.getElementById('navHome').onclick = ()=>show('home');
-    document.getElementById('navAbout').onclick = ()=>show('about');
-    document.getElementById('navAnalyzer').onclick = ()=>show('analyzer');
-    document.getElementById('ctaAnalyzer').onclick = ()=>show('analyzer');
+    document.getElementById('navHome').onclick = () => showView('home');
+    document.getElementById('navHome2').onclick = () => showView('home');
+    document.getElementById('navAbout').onclick = () => showView('about');
+    document.getElementById('ctaAnalyzer').onclick = () => showView('analyzer');
 
     // Login modal
-    const login = document.getElementById('loginModal');
-    document.getElementById('navLogin').onclick = ()=>login.classList.remove('hidden');
-    document.getElementById('closeLogin').onclick = ()=>login.classList.add('hidden');
+    const loginModal = document.getElementById('loginModal');
+    document.getElementById('navLogin').onclick = () => loginModal.classList.remove('hidden');
+    document.getElementById('closeLogin').onclick = () => loginModal.classList.add('hidden');
 
     // Auth flows
-    document.getElementById('signUpBtn').onclick = ()=>createUserWithEmailAndPassword(
-      auth, document.getElementById('email').value, document.getElementById('password').value
-    ).catch(e=>alert(e.message));
-
-    document.getElementById('signInBtn').onclick = ()=>signInWithEmailAndPassword(
-      auth, document.getElementById('email').value, document.getElementById('password').value
-    ).catch(e=>alert(e.message));
-
-    document.getElementById('googleBtn').onclick = ()=>signInWithPopup(auth,gp).catch(e=>alert(e.message));
-
-    onAuthStateChanged(auth,user=>{
-      const btn=document.getElementById('navLogin');
-      if(user){ btn.textContent='Sign Out'; btn.onclick=()=>signOut(auth).then(()=>window.location.reload()); login.classList.add('hidden'); }
-      else { btn.textContent='Log In / Sign Up'; btn.onclick=()=>login.classList.remove('hidden'); }
+    document.getElementById('signUpBtn').onclick = () => createUserWithEmailAndPassword(
+      auth,
+      document.getElementById('email').value,
+      document.getElementById('password').value
+    ).catch(e => alert(e.message));
+    document.getElementById('signInBtn').onclick = () => signInWithEmailAndPassword(
+      auth,
+      document.getElementById('email').value,
+      document.getElementById('password').value
+    ).catch(e => alert(e.message));
+    document.getElementById('googleBtn').onclick = () => signInWithPopup(auth, gp).catch(e => alert(e.message));
+    onAuthStateChanged(auth, user => {
+      const btn = document.getElementById('navLogin');
+      if (user) {
+        btn.textContent = 'Sign Out';
+        btn.onclick = () => signOut(auth).then(() => window.location.reload());
+        loginModal.classList.add('hidden');
+      } else {
+        btn.textContent = 'Log In / Sign Up';
+        btn.onclick = () => loginModal.classList.remove('hidden');
+      }
     });
 
-    // Analyze action (public)
-    document.getElementById('analyzeBtn').onclick = async ()=>{
-      const chk = document.getElementById('agreeChk').checked;
-      const out = document.getElementById('analysisOutput');
-      let scene = document.getElementById('sceneInput').value.trim();
-      const f = document.getElementById('sceneFile');
-      out.classList.add('hidden'); out.innerText='';
-      if(!chk){return alert('Accept Terms.');}
-      if(!scene && f.files.length) scene=await f.files[0].text();
-      if(scene.length<10){return alert('Paste/upload at least 10 chars');}
+    // Analyzer action
+    document.getElementById('analyzeBtn').onclick = async () => {
+      const agree = document.getElementById('agreeChk').checked;
+      const out   = document.getElementById('analysisOutput');
+      let   scene = document.getElementById('sceneInput').value.trim();
+      const file  = document.getElementById('sceneFile');
+
+      out.classList.add('hidden'); out.innerText = '';
+      if (!agree) return alert('Please accept Terms & Conditions');
+      if (!scene && file.files.length) scene = await file.files[0].text();
+      if (scene.length < 10) return alert('Paste/upload at least 10 chars');
+
       out.classList.remove('hidden');
-      out.innerHTML='<div class="flex items-center text-yellow-300">Analyzing...</div>';
-      try{
-        const res=await fetch('https://scenecraft-ai-backend.onrender.com/analyze',{method:'POST',headers:{'Content-Type':'application/json','x-user-agreement':'true'},body:JSON.stringify({scene,save:false})});
-        const data=await res.json();
-        out.textContent=data.analysis||data.error||'Unexpected error';
-      }catch(e){out.textContent='Network error: '+e.message;}
+      out.innerHTML = '<div class="flex items-center text-yellow-300">Analyzing...</div>';
+
+      try {
+        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json', 'x-user-agreement':'true' },
+          body: JSON.stringify({ scene, save:false })
+        });
+        const data = await res.json();
+        out.textContent = data.analysis || data.error || 'Unexpected error';
+      } catch (e) {
+        out.textContent = 'Network error: ' + e.message;
+      }
     };
   </script>
 </body>
