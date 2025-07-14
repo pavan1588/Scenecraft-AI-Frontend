@@ -1,215 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex flex-col min-h-screen bg-gray-900 text-gray-100">
+<body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
 
   <!-- Header -->
-  <header class="bg-gray-800 p-4 flex justify-between items-center">
-    <a href="#" id="navHome" class="text-2xl font-bold text-teal-400">SceneCraft AI</a>
-    <nav class="flex space-x-6">
-      <a href="#" id="navAnalyzer" class="text-teal-300 font-semibold border-b-2 border-teal-300 pb-1">Scene Analyzer</a>
-      <a href="#" id="navEditor" class="hover:text-teal-300">Scene Editor</a>
-      <a href="#" id="navWriter" class="hover:text-teal-300">Full Script Writer</a>
-      <a href="#" id="navHow" class="hover:text-teal-300">How it Works</a>
-      <a href="#" id="navPricing" class="hover:text-teal-300">Pricing</a>
-    </nav>
-    <button id="navLogin" class="bg-teal-400 text-gray-900 py-2 px-4 rounded-lg">Log In / Sign Up</button>
+  <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-20">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400">SceneCraft AI</a>
+      <nav class="flex space-x-6 text-lg">
+        <a href="#" id="navAnalyzer" class="text-yellow-300 border-b-2 border-yellow-300 pb-1">Scene Analyzer</a>
+        <a href="#" id="navEditor" class="hover:text-yellow-300">Scene Editor</a>
+        <a href="#" id="navWriter" class="hover:text-yellow-300">Full Script Writer</a>
+        <a href="#" id="navHow" class="hover:text-yellow-300">How it Works</a>
+        <a href="#" id="navPricing" class="hover:text-yellow-300">Pricing</a>
+      </nav>
+      <button id="navLogin" class="bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg">Log In / Sign Up</button>
+    </div>
   </header>
 
   <main class="flex-grow">
 
     <!-- Home Narrative -->
     <section id="view-home" class="p-8 max-w-4xl mx-auto space-y-8">
-      <h1 class="text-5xl font-bold text-teal-400 text-center">Welcome to SceneCraft AI</h1>
-      <p class="text-lg leading-relaxed text-gray-200">
-        SceneCraft AI is your ultimate cinematic storytelling partner. Powered by cutting-edge AI
-        and crafted by filmmakers, it transforms raw scenes into rich, actionable insights. Whether
-        you’re a screenwriter polishing a dialogue-heavy moment or a director exploring visual
-        dynamics, SceneCraft lights the way.
+      <h1 class="text-5xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
+      <p class="text-xl leading-relaxed text-gray-300">
+        Unlock the power of cinematic insight. SceneCraft AI combines advanced machine learning 
+        with filmmaker expertise to give you instant, page-to-screen feedback on your scenes.
+        Perfect your pacing, sharpen your stakes, and visualize your next shot—all in one tool.
       </p>
-      <!-- Illustration -->
       <img
-        src="https://your-cdn.com/565a9675-74f5-4fd7-b38f-2ee01e61df72.png"
-        alt="On-set cinematic team"
-        class="w-full rounded-lg shadow-lg"
+        src="https://images.unsplash.com/photo-1590608897129-79c44746557a?auto=format&fit=crop&w=1200&q=80"
+        alt="Film set with camera crew"
+        class="w-full rounded-xl shadow-xl border-4 border-yellow-400"
       />
-      <h2 class="text-3xl font-semibold text-teal-400">What We Offer</h2>
-      <ul class="list-disc list-inside space-y-2 text-gray-200">
-        <li><strong>Scene Analyzer:</strong> Deep-dive feedback on pacing, stakes, subtext, and cinematography.</li>
-        <li><strong>Scene Editor:</strong> (Coming Soon) AI-assisted rewriting & refining of your scenes.</li>
-        <li><strong>Full Script Writer:</strong> (Coming Soon) From concept to screenplay with genre templates.</li>
-        <li><strong>How it Works:</strong> Video walkthroughs, step-by-step demos, and best-practice guides.</li>
-        <li><strong>Pricing:</strong> Flexible plans for hobbyists, pros, and studios—scale as you grow.</li>
+      <h2 class="text-3xl font-semibold text-yellow-300 pt-6">Features at a Glance</h2>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-200">
+        <li class="bg-gray-800 p-4 rounded-lg">
+          <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
+          <p class="mt-2">Deep feedback on pacing, stakes, dialogue, subtext, and visual grammar.</p>
+        </li>
+        <li class="bg-gray-800 p-4 rounded-lg opacity-60">
+          <h3 class="font-semibold text-xl">Scene Editor</h3>
+          <p class="mt-2">AI-assisted rewriting and polish—coming soon.</p>
+        </li>
+        <li class="bg-gray-800 p-4 rounded-lg opacity-60">
+          <h3 class="font-semibold text-xl">Full Script Writer</h3>
+          <p class="mt-2">Generate full screenplays with genre templates—coming soon.</p>
+        </li>
+        <li class="bg-gray-800 p-4 rounded-lg opacity-60">
+          <h3 class="font-semibold text-xl">Collaborative Dashboard</h3>
+          <p class="mt-2">Save, compare, and share your analyses in one place.</p>
+        </li>
       </ul>
     </section>
 
     <!-- Scene Analyzer -->
-    <section id="view-analyzer" class="hidden p-6 max-w-3xl mx-auto bg-gray-800 rounded-lg space-y-4 relative">
+    <section id="view-analyzer" class="hidden p-6 max-w-3xl mx-auto bg-gray-900/80 rounded-xl space-y-4 relative mt-8">
       <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕ Close</button>
-      <h2 class="text-3xl font-bold text-teal-300 text-center">Scene Analyzer</h2>
+      <h2 class="text-3xl font-bold text-yellow-300 text-center">Scene Analyzer</h2>
       <textarea
         id="sceneInput"
         rows="6"
-        class="w-full p-4 bg-gray-700 rounded-lg text-gray-100"
+        class="w-full p-4 bg-gray-800 rounded-lg text-gray-100"
         placeholder="Paste your scene here..."
       ></textarea>
-      <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-gray-300" />
+      <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-gray-400"/>
       <label class="inline-flex items-center space-x-2 text-gray-200">
-        <input type="checkbox" id="agreeChk" class="form-checkbox text-teal-400" />
+        <input type="checkbox" id="agreeChk" class="form-checkbox text-yellow-400"/>
         <span>Agree to Terms & Conditions</span>
       </label>
-      <button id="analyzeBtn" class="w-full bg-teal-400 text-gray-900 py-2 rounded-lg font-semibold">
+      <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">
         Analyze
       </button>
-      <div
-        id="analysisOutput"
-        class="hidden w-full bg-gray-700 p-4 rounded-lg whitespace-pre-wrap text-gray-100"
-      ></div>
-    </section>
-
-    <!-- Other tabs (placeholders) -->
-    <section id="view-editor" class="hidden p-6 text-center text-gray-400">
-      <h2 class="text-3xl font-bold text-teal-300">Scene Editor</h2>
-      <p class="mt-4">AI-powered rewriting and polishing—coming soon.</p>
-    </section>
-    <section id="view-writer" class="hidden p-6 text-center text-gray-400">
-      <h2 class="text-3xl font-bold text-teal-300">Full Script Writer</h2>
-      <p class="mt-4">Generate and refine entire screenplays—coming soon.</p>
-    </section>
-    <section id="view-how" class="hidden p-6 max-w-3xl mx-auto text-gray-400">
-      <h2 class="text-3xl font-bold text-teal-300">How It Works</h2>
-      <p class="mt-4">2–3 minute demo video and step-by-step guide coming soon.</p>
-    </section>
-    <section id="view-pricing" class="hidden p-6 max-w-3xl mx-auto text-gray-400">
-      <h2 class="text-3xl font-bold text-teal-300">Pricing</h2>
-      <p class="mt-4">Flexible plans to suit every storyteller—details coming soon.</p>
+      <div id="analysisOutput" class="hidden w-full bg-gray-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
     </section>
 
     <!-- Terms & Conditions -->
-    <section id="view-terms" class="hidden p-6 max-w-3xl mx-auto bg-gray-800 text-gray-200 rounded-lg relative">
+    <section id="view-terms" class="hidden p-8 max-w-3xl mx-auto bg-gray-900/90 text-gray-200 rounded-xl relative mt-8">
       <button id="closeTerms" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕ Close</button>
-      <h2 class="text-3xl font-bold text-teal-300">Terms & Conditions</h2>
-      <h3 class="font-semibold">User Agreement</h3>
-      <p>Submit only content you own or have rights to.</p>
-      <h3 class="font-semibold">Disclaimer</h3>
-      <p>Analysis is for creative guidance only.</p>
-      <h3 class="font-semibold">Usage Policy</h3>
-      <ul class="list-disc list-inside">
-        <li>Original scenes/excerpts only</li>
-        <li>No random text or rewrite prompts</li>
-        <li>Not legal advice</li>
+      <h2 class="text-3xl font-bold text-yellow-300 mb-4">Terms & Conditions</h2>
+      <h3 class="font-semibold text-lg mt-4">1. User Agreement</h3>
+      <p>You confirm you own or have proper rights to any content (scenes, scripts, excerpts) you submit to SceneCraft AI. By submitting, you grant us permission to analyze that content.</p>
+
+      <h3 class="font-semibold text-lg mt-4">2. Disclaimer</h3>
+      <p>All feedback provided is for creative and educational purposes only. SceneCraft AI does not guarantee any results in your actual film or script production.</p>
+
+      <h3 class="font-semibold text-lg mt-4">3. Usage Policy</h3>
+      <ul class="list-disc list-inside ml-4">
+        <li>Submit only original or licensed material.</li>
+        <li>No hateful, harassing, or infringing content.</li>
+        <li>Do not use this tool for unlawful or defamatory purposes.</li>
       </ul>
-      <h3 class="font-semibold">Copyright Responsibility</h3>
-      <p>You retain all rights; we do not store or certify ownership.</p>
+
+      <h3 class="font-semibold text-lg mt-4">4. Privacy & Data</h3>
+      <p>We do not permanently store your submitted scenes or personal data beyond the scope of providing the analysis. You retain full ownership of your content.</p>
+
+      <h3 class="font-semibold text-lg mt-4">5. Limitation of Liability</h3>
+      <p>Under no circumstances shall SceneCraft AI or its affiliates be liable for any direct, indirect, incidental, or consequential damages arising from your use of the analysis.</p>
+
+      <h3 class="font-semibold text-lg mt-4">6. Changes to Terms</h3>
+      <p>We may update these terms at any time. Continued use after changes constitutes acceptance.</p>
+
+      <hr class="my-6 border-gray-700"/>
+      <p class="text-sm text-gray-500">&copy; 2025 SceneCraft AI. All rights reserved.</p>
     </section>
 
   </main>
 
   <script>
     // View toggling
-    const show = view => {
-      ['home','analyzer','editor','writer','how','pricing','terms'].forEach(v =>
-        document.getElementById('view-'+v).classList.add('hidden')
+    const show = v => {
+      ['home','analyzer','terms'].forEach(x =>
+        document.getElementById('view-'+x).classList.add('hidden')
       );
-      document.getElementById('view-'+view).classList.remove('hidden');
+      document.getElementById('view-'+v).classList.remove('hidden');
     };
-    // Nav handlers
+    // Header nav
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
-    document.getElementById('navEditor').onclick   = () => show('editor');
-    document.getElementById('navWriter').onclick   = () => show('writer');
-    document.getElementById('navHow').onclick      = () => show('how');
-    document.getElementById('navPricing').onclick  = () => show('pricing');
     // Close buttons
     document.getElementById('closeAnalyzer').onclick = () => {
-      // reset analyzer fields
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value  = '';
       document.getElementById('agreeChk').checked  = false;
-      document.getElementById('analysisOutput').classList.add('hidden');
-      document.getElementById('analysisOutput').innerText = '';
+      const out = document.getElementById('analysisOutput');
+      out.classList.add('hidden');
+      out.innerText = '';
       show('home');
     };
+    document.getElementById('ctaTerms')?.addEventListener('click', () => show('terms'));
     document.getElementById('closeTerms').onclick = () => show('home');
-    // ESC closes any modal
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') show('home');
-    });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') show('home'); });
 
-    // Analysis logic (same caching & cleaning as before)
-    let lastScene = '';
-    let lastResult = '';
-
+    // Analysis logic (unchanged caching & cleaning)
+    let lastScene = '', lastResult = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
       const out   = document.getElementById('analysisOutput');
-      let scene  = document.getElementById('sceneInput').value.trim();
-      const file = document.getElementById('sceneFile');
+      let scene   = document.getElementById('sceneInput').value.trim();
+      const file  = document.getElementById('sceneFile');
 
-      if (scene && scene === lastScene && lastResult) {
-        out.classList.remove('hidden');
-        out.textContent = lastResult;
-        return;
+      if(scene && scene===lastScene && lastResult){
+        out.classList.remove('hidden'); out.textContent=lastResult; return;
       }
 
-      out.classList.add('hidden');
-      out.innerText = '';
-      if (!agree) return alert('Please accept Terms & Conditions.');
-      if (!scene && file.files.length) {
-        file.files[0].text().then(txt => {
+      out.classList.add('hidden'); out.innerText='';
+      if(!agree) return alert('Please accept Terms & Conditions.');
+      if(!scene && file.files.length){
+        file.files[0].text().then(txt=>{
           scene = txt.trim();
-          if (scene === lastScene && lastResult) {
-            out.classList.remove('hidden');
-            out.textContent = lastResult;
-            return;
+          if(scene===lastScene && lastResult){
+            out.classList.remove('hidden'); out.textContent=lastResult; return;
           }
-          doAnalyze(scene, out);
+          doAnalyze(scene,out);
         });
         return;
       }
-      if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
-
-      doAnalyze(scene, out);
+      if(scene.length<10) return alert('Paste or upload at least 10 characters.');
+      doAnalyze(scene,out);
     };
 
-    function doAnalyze(scene, out) {
+    function doAnalyze(scene, out){
       out.classList.remove('hidden');
-      out.innerHTML = '<p class="text-teal-300">Analyzing...</p>';
-
-      fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-user-agreement': 'true'
-        },
-        body: JSON.stringify({ scene, save: false })
+      out.innerHTML='<p class="text-yellow-300">Analyzing...</p>';
+      fetch('https://scenecraft-ai-backend.onrender.com/analyze',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-user-agreement':'true'},
+        body:JSON.stringify({scene,save:false})
       })
-      .then(async res => {
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text || '{}'); } catch { data = {}; }
-        let analysis = res.ok && data.analysis
-          ? data.analysis
-          : data.error || data.detail || `Error ${res.status}`;
-        // strip bullets & heading lines
+      .then(async res=>{
+        const text=await res.text();
+        let data; try{data=JSON.parse(text||'{}')}catch{data={}} 
+        let analysis = res.ok&&data.analysis?data.analysis:data.error||data.detail||`Error ${res.status}`;
         const cleaned = analysis
           .split('\n')
-          .filter(l => !l.trim().startsWith('•'))
-          .filter(l => !/^[^:]+:\s*$/.test(l.trim()))
-          .join('\n')
-          .trim();
-        out.textContent = cleaned;
-        lastScene = scene;
-        lastResult = cleaned;
+          .filter(l=>!l.trim().startsWith('•'))
+          .filter(l=>!/^[^:]+:\s*$/.test(l.trim()))
+          .join('\n').trim();
+        out.textContent=cleaned;
+        lastScene=scene; lastResult=cleaned;
       })
-      .catch(e => {
-        out.textContent = 'Network error: ' + e.message;
-      });
+      .catch(e=>{ out.textContent='Network error: '+e.message });
     }
 
     // Start on Home
