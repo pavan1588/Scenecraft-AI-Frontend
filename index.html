@@ -34,10 +34,10 @@
         each shot with expert guidance.
       </p>
 
-      <!-- Narrower, Reliable Cinematic Hero Image -->
+      <!-- Reliable Cinema-Tech Hero Image -->
       <img
-        src="https://picsum.photos/seed/camera/1200/300"
-        alt="Professional film camera and lighting setup"
+        src="https://placeimg.com/1200/300/tech"
+        alt="Cinema camera and lighting gear"
         class="w-full h-48 rounded-xl shadow-2xl border-4 border-yellow-400 object-cover"
       />
 
@@ -86,13 +86,13 @@
       <!-- Embedded, fixed T&C -->
       <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded-lg max-h-48 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
-        <p><strong>1. User Agreement:</strong> You represent and warrant that you have the rights to submit any content for analysis.</p>
-        <p><strong>2. Feedback Disclaimer:</strong> Insights are provided “as-is” for creative guidance only, without warranties.</p>
-        <p><strong>3. Usage Policy:</strong> Do not submit unlawful, infringing, or offensive content.</p>
-        <p><strong>4. Privacy & Data:</strong> Submissions are processed in-memory and not stored permanently.</p>
-        <p><strong>5. Limitation of Liability:</strong> SceneCraft AI and affiliates shall not be liable for any damages arising from use.</p>
-        <p><strong>6. Legal Disclaimer:</strong> This tool does not constitute legal or financial advice.</p>
-        <p><strong>7. Updates:</strong> Continued use implies acceptance of updated terms.</p>
+        <p><strong>1. User Agreement:</strong> You warrant having rights to submitted content.</p>
+        <p><strong>2. Feedback Disclaimer:</strong> Insights are “as-is” creative guidance.</p>
+        <p><strong>3. Usage Policy:</strong> No infringing or unlawful content allowed.</p>
+        <p><strong>4. Privacy & Data:</strong> Inputs are not stored beyond the session.</p>
+        <p><strong>5. Limitation of Liability:</strong> No liability for direct or indirect damages.</p>
+        <p><strong>6. Legal Disclaimer:</strong> Not legal or financial advice; use at own risk.</p>
+        <p><strong>7. Updates:</strong> Continued use implies acceptance of updates.</p>
       </div>
 
       <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">
@@ -203,15 +203,12 @@
           .filter(l=>l.trim() && !l.trim().startsWith('•'))
           .join('\n').trim();
 
-        const aClean = clean(analysis);
-        const sClean = clean(suggestions);
-
-        resEl.textContent  = aClean;
-        sugEl.textContent = sClean;
+        resEl.textContent  = clean(analysis);
+        sugEl.textContent = clean(suggestions);
 
         lastScene       = scene;
-        lastResult      = aClean;
-        lastSuggestions = sClean;
+        lastResult      = clean(analysis);
+        lastSuggestions = clean(suggestions);
       })
       .catch(e => resEl.textContent = 'Network error: ' + e.message);
     }
