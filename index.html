@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -57,7 +58,7 @@
         <span>Agree to Terms & Conditions</span>
       </label>
       <button id="analyzeBtn" class="bg-yellow-400 text-indigo-900 py-2 px-4 rounded-lg">Analyze</button>
-      <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg"></div>
+      <div id="analysisOutput" class="hidden w-full max-w-3xl bg-indigo-800 p-4 rounded-lg whitespace-pre-wrap"></div>
     </section>
 
     <!-- Terms -->
@@ -110,13 +111,13 @@
       out.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
 
       try {
-        const res = await fetch('/analyze', {
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json',
-            'x-user-agreement':'true'
+        const res = await fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-agreement': 'true'
           },
-          body:JSON.stringify({scene,save:false})
+          body: JSON.stringify({ scene, save: false })
         });
         const text = await res.text();
         let data;
