@@ -9,7 +9,7 @@
 <body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
 
   <!-- Header -->
-  <header class="bg-gray-900/80 backdrop-blur sticky top-0 z-20">
+  <header class="bg-gray-900/90 backdrop-blur sticky top-0 z-20">
     <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
       <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400">SceneCraft AI</a>
       <nav class="flex space-x-6 text-lg">
@@ -25,19 +25,20 @@
 
   <main class="flex-grow">
 
-    <!-- Home Narrative -->
+    <!-- Home -->
     <section id="view-home" class="p-8 max-w-4xl mx-auto space-y-8">
       <h1 class="text-5xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
-      <p class="text-xl leading-relaxed text-gray-300">
-        SceneCraft AI is your ultimate cinematic storytelling partner. Powered by cutting-edge AI
-        and crafted by filmmakers, it transforms raw scenes into rich, actionable insights.
+      <p class="text-xl text-gray-300 leading-relaxed">
+        SceneCraft AI is your cinematic storytelling ally—melding AI smarts with filmmaker craft to
+        deliver instant, actionable scene feedback. Elevate your pacing, stakes, subtext, and
+        visuals in one intuitive tool.
       </p>
 
-      <!-- Stable Hero Illustration -->
+      <!-- Hero Image (reliable Unsplash) -->
       <img
-        src="https://images.unsplash.com/photo-1541508180669-f1591b15e7ad?auto=format&fit=crop&w=1200&q=80"
-        alt="On-set film production"
-        class="w-full rounded-xl shadow-xl border-4 border-yellow-400 object-cover"
+        src="https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=1200&q=80"
+        alt="Film crew lighting a set"
+        class="w-full rounded-xl shadow-2xl border-4 border-yellow-400 object-cover"
       />
 
       <h2 class="text-3xl font-semibold text-yellow-300 pt-6">Features at a Glance</h2>
@@ -62,9 +63,9 @@
     </section>
 
     <!-- Scene Analyzer -->
-    <section id="view-analyzer" class="hidden p-6 max-w-3xl mx-auto bg-gray-900/80 rounded-xl space-y-4 relative mt-8">
+    <section id="view-analyzer" class="hidden p-6 max-w-3xl mx-auto bg-gray-900/80 rounded-xl space-y-6 relative mt-8">
       <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕ Close</button>
-      <h2 class="text-3xl font-bold text-yellow-300 text-center">Scene Analyzer</h2>
+      <h2 class="text-3xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
 
       <textarea
         id="sceneInput"
@@ -82,22 +83,28 @@
         </span>
       </label>
 
-      <!-- Embedded Terms & Conditions Panel -->
+      <!-- Embedded, fixed T&C -->
       <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded-lg max-h-48 overflow-y-auto text-gray-200">
         <h3 class="font-semibold">Terms & Conditions</h3>
-        <p><strong>1. User Agreement:</strong> You confirm rights to any content you submit.</p>
-        <p><strong>2. Disclaimer:</strong> Feedback is creative guidance only; no production guarantees.</p>
-        <p><strong>3. Usage Policy:</strong> No infringing, hateful, or unlawful content.</p>
-        <p><strong>4. Privacy & Data:</strong> Submissions are not stored beyond analysis.</p>
-        <p><strong>5. Liability:</strong> We’re not liable for outcomes in your projects.</p>
-        <p><strong>6. Updates:</strong> Continued use constitutes acceptance of changes.</p>
+        <p><strong>1. User Agreement:</strong> You represent that you have the rights to submit any content for analysis.</p>
+        <p><strong>2. Feedback Disclaimer:</strong> All insights are for creative guidance; no warranty of production results.</p>
+        <p><strong>3. Usage Policy:</strong> No unlawful, infringing, or offensive content may be submitted.</p>
+        <p><strong>4. Privacy & Data:</strong> Submitted scenes are not retained beyond the analysis session.</p>
+        <p><strong>5. Limitation of Liability:</strong> SceneCraft AI is not liable for any downstream creative or financial outcomes.</p>
+        <p><strong>6. Legal Disclaimer:</strong> This tool is not legal or financial advice. Use at your own risk.</p>
+        <p><strong>7. Updates:</strong> Continued use constitutes acceptance of any future changes.</p>
       </div>
 
       <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">
         Analyze
       </button>
 
-      <div id="analysisOutput" class="hidden w-full bg-gray-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
+      <!-- Analysis + Suggestions -->
+      <div id="analysisOutput" class="hidden space-y-4">
+        <div id="analysisResult" class="bg-gray-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
+        <h3 class="text-xl font-semibold text-yellow-300">Suggestions</h3>
+        <div id="analysisSuggestions" class="bg-gray-800 p-4 rounded-lg whitespace-pre-wrap text-gray-100"></div>
+      </div>
     </section>
 
   </main>
@@ -111,7 +118,7 @@
       document.getElementById('view-'+name).classList.remove('hidden');
     };
 
-    // Navigation
+    // Nav bindings
     document.getElementById('navHome').onclick    = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
 
@@ -121,73 +128,101 @@
       document.getElementById('sceneFile').value  = '';
       document.getElementById('agreeChk').checked  = false;
       document.getElementById('tcPanel').classList.add('hidden');
-      const out = document.getElementById('analysisOutput');
-      out.classList.add('hidden'); out.innerText = '';
+      document.getElementById('analysisOutput').classList.add('hidden');
+      document.getElementById('analysisResult').innerText = '';
+      document.getElementById('analysisSuggestions').innerText = '';
       show('home');
     };
 
-    // Toggle embedded T&C
+    // Toggle T&C
     document.getElementById('toggleTC').onclick = () =>
       document.getElementById('tcPanel').classList.toggle('hidden');
 
-    // Analysis logic with label‐stripping
-    let lastScene = '', lastResult = '';
+    // Analysis logic
+    let lastScene = '', lastResult = '', lastSuggestions = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
-      const out   = document.getElementById('analysisOutput');
-      let scene   = document.getElementById('sceneInput').value.trim();
-      const file  = document.getElementById('sceneFile');
+      const outWrapper = document.getElementById('analysisOutput');
+      const outResult  = document.getElementById('analysisResult');
+      const outSuggest = document.getElementById('analysisSuggestions');
+      let scene = document.getElementById('sceneInput').value.trim();
+      const file = document.getElementById('sceneFile');
 
+      // reuse if same scene
       if (scene && scene === lastScene && lastResult) {
-        out.classList.remove('hidden'); out.textContent = lastResult; return;
+        outResult.textContent      = lastResult;
+        outSuggest.textContent     = lastSuggestions;
+        outWrapper.classList.remove('hidden');
+        return;
       }
-      out.classList.add('hidden'); out.innerText = '';
+
+      outWrapper.classList.add('hidden');
+      outResult.innerText  = '';
+      outSuggest.innerText = '';
+
       if (!agree) return alert('Please accept Terms & Conditions.');
       if (!scene && file.files.length) {
         file.files[0].text().then(txt => {
           scene = txt.trim();
           if (scene === lastScene && lastResult) {
-            out.classList.remove('hidden'); out.textContent = lastResult; return;
+            outResult.textContent  = lastResult;
+            outSuggest.textContent = lastSuggestions;
+            outWrapper.classList.remove('hidden');
+            return;
           }
-          doAnalyze(scene, out);
+          doAnalyze(scene, outWrapper, outResult, outSuggest);
         });
         return;
       }
       if (scene.length < 10) return alert('Paste or upload at least 10 characters.');
-      doAnalyze(scene, out);
+      doAnalyze(scene, outWrapper, outResult, outSuggest);
     };
 
-    function doAnalyze(scene, out) {
-      out.classList.remove('hidden');
-      out.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
+    function doAnalyze(scene, wrapper, resEl, sugEl) {
+      wrapper.classList.remove('hidden');
+      resEl.innerHTML = '<p class="text-yellow-300">Analyzing...</p>';
+      sugEl.innerHTML = '';
+
       fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-user-agreement': 'true'
+          'Content-Type':'application/json',
+          'x-user-agreement':'true'
         },
         body: JSON.stringify({ scene, save: false })
       })
-      .then(async res => {
-        const text = await res.text();
-        let data; try { data = JSON.parse(text||'{}') } catch { data = {} }
-        let analysis = res.ok && data.analysis
-          ? data.analysis
-          : data.error || data.detail || `Error ${res.status}`;
-        // Strip out any "Label: " prefix on each line
-        const cleaned = analysis
+      .then(async r => {
+        const t = await r.text();
+        let d; try { d = JSON.parse(t||'{}') } catch { d = {} }
+        let output = r.ok && d.analysis ? d.analysis : d.error||d.detail||`Error ${r.status}`;
+
+        // split analysis vs suggestions if backend returns "### Suggestions"
+        let [analysis, suggestions] = output.split(/###\s*Suggestions/i);
+        suggestions = suggestions || '';
+
+        // strip labels
+        const clean = txt => txt
           .split('\n')
           .map(l => l.replace(/^[^:]+:\s*/, ''))
-          .filter(l => l.trim() && !l.trim().startsWith('•'))
-          .join('\n')
-          .trim();
-        out.textContent = cleaned;
-        lastScene = scene; lastResult = cleaned;
+          .filter(l=>l.trim() && !l.trim().startsWith('•'))
+          .join('\n').trim();
+
+        const aClean = clean(analysis);
+        const sClean = clean(suggestions);
+
+        resEl.textContent  = aClean;
+        sugEl.textContent = sClean;
+
+        lastScene       = scene;
+        lastResult      = aClean;
+        lastSuggestions = sClean;
       })
-      .catch(e => out.textContent = 'Network error: ' + e.message);
+      .catch(e => {
+        resEl.textContent = 'Network error: ' + e.message;
+      });
     }
 
-    // Start on Home
+    // start on home
     show('home');
   </script>
 </body>
