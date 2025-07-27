@@ -5,9 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Password protection before render -->
   <script>
-    if (prompt("Enter preview password") !== "prantasdatwanta") {
-      document.body.innerHTML = "<h1 style='color:#f00;text-align:center;margin-top:2rem;'>Access Denied</h1>";
+    const allowed = sessionStorage.getItem('scenecraft_access_granted');
+    if (!allowed) {
+      const pass = prompt("Enter preview password");
+      if (pass !== "prantasdatwanta") {
+        document.write("<h1 style='color:#f00;text-align:center;margin-top:2rem;'>Access Denied</h1>");
+        throw new Error("Unauthorized");
+      } else {
+        sessionStorage.setItem('scenecraft_access_granted', 'yes');
+      }
     }
   </script>
 </head>
@@ -31,14 +40,13 @@
   </header>
 
   <main class="flex-grow">
-    <!-- Home -->
+    <!-- Home Section -->
     <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
       <p class="text-lg text-gray-300 leading-relaxed text-center">
         SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
       </p>
 
-      <!-- Golden separator bar -->
       <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 mx-auto rounded-full mb-6"></div>
 
       <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
@@ -47,9 +55,9 @@
           <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
           <p class="mt-2 text-gray-200">Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</p>
         </div>
-        <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-          <h3 class="font-semibold text-xl">Scene Editor</h3>
-          <p class="mt-2 text-gray-200">(Now Live) AI-assisted rewriting and refinement.</p>
+        <div class="bg-gray-800 p-6 rounded-lg opacity-100">
+          <h3 class="font-semibold text-xl text-yellow-300">Scene Editor</h3>
+          <p class="mt-2 text-gray-200">AI-assisted rewriting and enhancement suggestions.</p>
         </div>
         <div class="bg-gray-800 p-6 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Full Script Writer</h3>
@@ -84,7 +92,7 @@
         </label>
       </div>
 
-      <!-- Terms & Conditions Panel -->
+      <!-- Terms & Conditions -->
       <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded max-h-48 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
         <p class="mb-3"><strong>User Agreement:</strong> You confirm you hold all rights to any content you submit.</p>
@@ -100,7 +108,6 @@
         Analyze
       </button>
 
-      <!-- Analysis & Suggestions Box -->
       <div id="analysisOutput" class="hidden bg-gray-800 p-6 rounded-lg mt-6">
         <h3 class="font-semibold text-yellow-300 mb-4">Analysis & Suggestions</h3>
         <div id="analysisResult" class="text-gray-100 space-y-4"></div>
@@ -109,7 +116,6 @@
   </main>
 
   <script>
-    // View toggler
     const show = v => {
       ['home','analyzer'].forEach(n=>document.getElementById('view-'+n).classList.add('hidden'));
       document.getElementById('view-'+v).classList.remove('hidden');
@@ -117,7 +123,6 @@
     document.getElementById('navHome').onclick = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
 
-    // Reset analyzer
     document.getElementById('closeAnalyzer').onclick = () => {
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value = '';
@@ -128,11 +133,9 @@
       show('home');
     };
 
-    // Toggle T&C
     document.getElementById('toggleTC').onclick = () =>
       document.getElementById('tcPanel').classList.toggle('hidden');
 
-    // Analysis logic
     let lastScene = '', lastOutput = '';
     document.getElementById('analyzeBtn').onclick = () => {
       const agree = document.getElementById('agreeChk').checked;
@@ -186,7 +189,6 @@
       });
     }
 
-    // Init
     show('home');
   </script>
 </body>
