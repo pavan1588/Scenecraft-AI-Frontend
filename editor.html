@@ -3,50 +3,58 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>SceneCraft AI - Scene Editor</title>
+  <title>SceneCraft AI – Scene Editor</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: #000; color: #fff; margin: 0; font-family: Arial, sans-serif; }
-    #main-content { display: none; }
-    #access-denied { display: none; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: red; background: #000; }
+    body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; }
+    #access-denied, #main-content { display:none; }
+    #access-denied {
+      height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; color:red;
+    }
   </style>
   <script>
+    // Run as soon as possible
     (function(){
       const PASSWORD = "SCENECRAFT-2024";
       const TTL_MS   = 30 * 60 * 1000; // 30 minutes
 
       const granted = sessionStorage.getItem("scene_access_granted")==="true";
-      const ts      = parseInt(sessionStorage.getItem("scene_access_time")||"0",10);
+      const ts      = Number(sessionStorage.getItem("scene_access_time")||"0");
       const now     = Date.now();
       const valid   = granted && (now - ts < TTL_MS);
 
       if (valid) {
-        document.getElementById("main-content")?.style.setProperty("display","block");
+        document.addEventListener("DOMContentLoaded", ()=>{
+          document.getElementById("main-content").style.display = "block";
+        });
         return;
       }
-      // else prompt:
-      const entry = prompt("This site is protected. Please enter the password:");
+
+      const entry = prompt("This site is protected. Enter password:");
       if (entry === PASSWORD) {
         sessionStorage.setItem("scene_access_granted","true");
         sessionStorage.setItem("scene_access_time", now.toString());
-        document.getElementById("main-content")?.style.setProperty("display","block");
+        document.addEventListener("DOMContentLoaded", ()=>{
+          document.getElementById("main-content").style.display = "block";
+        });
       } else {
         document.addEventListener("DOMContentLoaded", ()=>{
-          document.getElementById("access-denied").style.setProperty("display","flex");
+          document.getElementById("access-denied").style.display = "flex";
         });
       }
     })();
   </script>
 </head>
 <body class="p-8 min-h-screen">
-
+  <!-- Shown on wrong/cancel -->
   <div id="access-denied">
     <h1 class="text-4xl mb-4">Access Denied</h1>
     <p>Reload and enter the correct password.</p>
   </div>
 
+  <!-- Protected UI -->
   <div id="main-content">
-
     <h1 class="text-3xl font-bold text-yellow-400 mb-6 text-center">SceneCraft AI – Scene Editor</h1>
 
     <textarea id="sceneInputEditor"
@@ -73,8 +81,7 @@
       <h3 class="text-yellow-300 font-semibold mb-2">Rewrite Suggestions</h3>
       <div id="editResult" class="space-y-4 text-gray-100"></div>
     </div>
-
-  </div><!-- /#main-content -->
+  </div>
 
   <script>
     document.getElementById('editBtn').onclick = () => {
@@ -83,8 +90,7 @@
       const file  = document.getElementById('sceneFileEditor');
 
       if (!agree) {
-        alert("Please accept the Terms & Conditions.");
-        return;
+        return alert("Please accept the Terms & Conditions.");
       }
       if (!scene && file.files.length) {
         return file.files[0].text().then(txt => runEdit(txt.trim()));
@@ -110,8 +116,8 @@
       })
       .then(r => r.json())
       .then(d => {
-        const cleaned = d.rewrites || d.error || 'No response.';
-        renderParagraphs(cleaned);
+        const text = d.rewrites || d.error || 'No response.';
+        renderParagraphs(text);
       })
       .catch(e => renderParagraphs('Network error: ' + e.message));
     }
