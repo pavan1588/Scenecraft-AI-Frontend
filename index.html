@@ -2,199 +2,153 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="robots" content="noindex, nofollow"/>
 </head>
-<body class="bg-black text-gray-100">
+<body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
 
-  <!-- Password Gate -->
-  <div id="passwordGate" class="flex items-center justify-center h-screen">
-    <div class="bg-gray-800 p-6 rounded-lg text-center max-w-sm w-full">
-      <h1 class="text-xl font-semibold mb-4 text-yellow-300">Enter Preview Password</h1>
-      <input id="passwordInput" type="password" placeholder="Password"
-             class="w-full px-4 py-2 rounded bg-gray-700 text-white mb-4"/>
-      <button id="submitPassword"
-              class="w-full bg-yellow-400 text-gray-900 py-2 rounded font-semibold">
-        Enter
+  <!-- Header -->
+  <header class="bg-gray-900/90 backdrop-blur sticky top-0 z-20">
+    <div class="max-w-5xl mx-auto flex items-center p-4">
+      <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400 mr-8">SceneCraft AI</a>
+      <nav class="flex space-x-6 flex-1">
+        <a href="#" id="navAnalyzer" class="text-yellow-300 border-b-2 border-yellow-300 pb-1">Scene Analyzer</a>
+        <a href="#" id="navEditor" class="hover:text-yellow-300">Scene Editor</a>
+      </nav>
+      <button id="navLogin" class="ml-8 bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg whitespace-nowrap">
+        Log In / Sign Up
       </button>
-      <p id="errorMsg" class="text-red-500 mt-3 hidden">Access Denied</p>
     </div>
-  </div>
+  </header>
 
-  <!-- Main App -->
-  <div id="mainApp" class="hidden">
-    <header class="bg-gray-900/90 backdrop-blur sticky top-0 z-20">
-      <div class="max-w-5xl mx-auto flex items-center p-4">
-        <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400 mr-8">SceneCraft AI</a>
-        <nav class="flex space-x-6 flex-1">
-          <a href="#" id="navAnalyzer" class="text-yellow-300 border-b-2 border-yellow-300 pb-1">Scene Analyzer</a>
-          <a href="#" class="hover:text-yellow-300">Scene Editor</a>
-          <a href="#" class="hover:text-yellow-300">Full Script Writer</a>
-          <a href="#" class="hover:text-yellow-300">How it Works</a>
-          <a href="#" class="hover:text-yellow-300">Pricing</a>
-        </nav>
-        <button id="navLogin" class="ml-8 bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg whitespace-nowrap">
-          Log In / Sign Up
-        </button>
+  <main class="flex-grow">
+    <!-- Home View -->
+    <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
+      <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
+      <p class="text-lg text-gray-300 text-center">Your cinematic partner for analyzing and editing your film scenes with AI-driven precision.</p>
+      <div class="w-32 h-1 bg-yellow-300 mx-auto my-6 rounded-full"></div>
+    </section>
+
+    <!-- Scene Analyzer -->
+    <section id="view-analyzer" class="hidden p-6 max-w-4xl mx-auto bg-gray-900/80 rounded-lg mt-6">
+      <h2 class="text-2xl font-bold text-yellow-300 mb-4">Scene Analyzer</h2>
+      <textarea id="sceneInput" rows="6" class="w-full p-4 bg-gray-800 rounded text-gray-100" placeholder="Paste your scene here..."></textarea>
+      <div class="mt-4 flex items-center space-x-4">
+        <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-gray-400"/>
+        <label class="inline-flex items-center text-gray-200">
+          <input type="checkbox" id="agreeChk" class="form-checkbox text-yellow-400 mr-2"/>
+          <span>I agree to <button id="toggleTC" class="underline text-yellow-300 hover:text-yellow-400">Terms & Conditions</button></span>
+        </label>
       </div>
-    </header>
+      <div id="tcPanel" class="hidden bg-gray-800 p-4 mt-4 rounded text-sm text-gray-300 max-h-48 overflow-y-auto">
+        <p><strong>Disclaimer:</strong> Creative use only. No data is stored.</p>
+      </div>
+      <button id="analyzeBtn" class="mt-4 w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">Analyze</button>
+      <div id="analysisOutput" class="hidden mt-6 bg-gray-800 p-6 rounded">
+        <h3 class="text-yellow-300 font-semibold mb-2">Analysis & Suggestions</h3>
+        <div id="analysisResult" class="text-gray-100 space-y-4"></div>
+      </div>
+    </section>
 
-    <main class="flex-grow">
-      <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
-        <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
-        <p class="text-lg text-gray-300 leading-relaxed text-center">
-          SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
-        </p>
-        <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 mx-auto rounded-full mb-6"></div>
-        <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-gray-800 p-6 rounded-lg">
-            <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
-            <p class="mt-2 text-gray-200">Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-            <h3 class="font-semibold text-xl">Scene Editor</h3>
-            <p class="mt-2 text-gray-200">(Coming Soon) AI-assisted rewriting and refinement.</p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-            <h3 class="font-semibold text-xl">Full Script Writer</h3>
-            <p class="mt-2 text-gray-200">(Coming Soon) Craft complete screenplays with structure and style guidance.</p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-            <h3 class="font-semibold text-xl">Collaborative Dashboard</h3>
-            <p class="mt-2 text-gray-200">Save, compare, and export your analyses in one intuitive interface.</p>
-          </div>
-        </div>
-      </section>
+    <!-- Scene Editor -->
+    <section id="view-editor" class="hidden p-6 max-w-4xl mx-auto bg-gray-900/80 rounded-lg mt-6">
+      <h2 class="text-2xl font-bold text-yellow-300 mb-4">Scene Editor</h2>
+      <textarea id="sceneInputEditor" rows="6" class="w-full p-4 bg-gray-800 rounded text-gray-100" placeholder="Paste your scene here (max 2 pages)..."></textarea>
+      <div class="mt-4 flex items-center space-x-4">
+        <input type="file" id="sceneFileEditor" accept=".txt,.pdf" class="text-gray-400"/>
+        <label class="inline-flex items-center text-gray-200">
+          <input type="checkbox" id="agreeChkEditor" class="form-checkbox text-yellow-400 mr-2"/>
+          <span>I agree to <button onclick="document.getElementById('tcPanel').classList.toggle('hidden')" class="underline text-yellow-300 hover:text-yellow-400">Terms & Conditions</button></span>
+        </label>
+      </div>
+      <button id="editBtn" class="mt-4 w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-semibold">Edit Scene</button>
+      <div id="editOutput" class="hidden mt-6 bg-gray-800 p-6 rounded">
+        <h3 class="text-yellow-300 font-semibold mb-2">Rewrite Suggestions</h3>
+        <div id="editResult" class="text-gray-100 space-y-4"></div>
+      </div>
+    </section>
+  </main>
 
-      <section id="view-analyzer" class="hidden p-6 max-w-4xl mx-auto bg-gray-900/80 rounded-lg space-y-4 mt-8 relative">
-        <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕</button>
-        <h2 class="text-2xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
-
-        <textarea id="sceneInput" rows="6" class="w-full p-4 bg-gray-800 rounded text-gray-100" placeholder="Paste your scene here..."></textarea>
-
-        <div class="flex items-center space-x-4">
-          <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-gray-400"/>
-          <label class="inline-flex items-center text-gray-200">
-            <input type="checkbox" id="agreeChk" class="form-checkbox text-yellow-400"/>
-            <span>I agree to 
-              <button id="toggleTC" class="underline text-yellow-300 hover:text-yellow-400">Terms & Conditions</button>
-            </span>
-          </label>
-        </div>
-
-        <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded max-h-48 overflow-y-auto text-gray-200">
-          <h3 class="font-semibold mb-2">Terms & Conditions</h3>
-          <p class="mb-3"><strong>User Agreement:</strong> You confirm you hold all rights to any content you submit.</p>
-          <p class="mb-3"><strong>Disclaimer:</strong> Feedback is provided “as-is” for creative guidance; no guarantees regarding production outcomes.</p>
-          <p class="mb-3"><strong>Restrictions:</strong> Submission of unlawful, infringing, or offensive content is prohibited.</p>
-          <p class="mb-3"><strong>Privacy:</strong> Inputs are processed transiently and not retained beyond the session.</p>
-          <p class="mb-3"><strong>Liability:</strong> SceneCraft AI and affiliates disclaim all liability for damages arising from use.</p>
-          <p class="mb-3"><strong>Legal Disclaimer:</strong> This service does not constitute legal, financial, or professional advice. Use at your own risk.</p>
-          <p class="mb-3"><strong>Updates:</strong> Continued use implies acceptance of updated terms.</p>
-          <p class="mt-4 text-xs text-gray-500">&copy; 2025 SceneCraft AI. All rights reserved.</p>
-        </div>
-
-        <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-3 rounded-lg font-semibold">Analyze</button>
-
-        <div id="analysisOutput" class="hidden bg-gray-800 p-6 rounded-lg mt-6">
-          <h3 class="font-semibold text-yellow-300 mb-4">Analysis & Suggestions</h3>
-          <div id="analysisResult" class="text-gray-100 space-y-4"></div>
-        </div>
-      </section>
-    </main>
-
-    <script>
-      const show = v => {
-        ['home','analyzer'].forEach(n => document.getElementById('view-'+n).classList.add('hidden'));
-        document.getElementById('view-'+v).classList.remove('hidden');
-      };
-      document.getElementById('navHome').onclick = () => show('home');
-      document.getElementById('navAnalyzer').onclick = () => show('analyzer');
-
-      document.getElementById('closeAnalyzer').onclick = () => {
-        document.getElementById('sceneInput').value = '';
-        document.getElementById('sceneFile').value  = '';
-        document.getElementById('agreeChk').checked  = false;
-        document.getElementById('tcPanel').classList.add('hidden');
-        document.getElementById('analysisOutput').classList.add('hidden');
-        document.getElementById('analysisResult').innerText = '';
-        show('home');
-      };
-
-      document.getElementById('toggleTC').onclick = () =>
-        document.getElementById('tcPanel').classList.toggle('hidden');
-
-      let lastScene='', lastOutput='';
-      document.getElementById('analyzeBtn').onclick = () => {
-        const agree = document.getElementById('agreeChk').checked;
-        let scene = document.getElementById('sceneInput').value.trim();
-        const file = document.getElementById('sceneFile');
-        if (!agree) return alert('Please accept Terms & Conditions.');
-        if (!scene && file.files.length) {
-          return file.files[0].text().then(txt => runAnalysis(txt.trim()));
-        }
-        runAnalysis(scene);
-      };
-
-      function runAnalysis(scene) {
-        if (scene.length<10) return alert('Enter at least 10 characters.');
-        const outBox = document.getElementById('analysisOutput');
-        const resBox = document.getElementById('analysisResult');
-        if (scene === lastScene && lastOutput) {
-          renderParagraphs(lastOutput);
-          outBox.classList.remove('hidden');
-          return;
-        }
-        resBox.innerText='Analyzing...'; outBox.classList.remove('hidden');
-        fetch('https://scenecraft-ai-backend.onrender.com/analyze',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','x-user-agreement':'true'},
-          body: JSON.stringify({ scene, save:false })
-        })
-        .then(r => r.json())
-        .then(d => {
-          let t = d.analysis||d.error||'';
-          const cleaned = t.split('\\n').map(l => l.replace(/^[^:]+:\\s*/, '')).filter(l => l.trim()).join('\\n\\n');
-          lastScene=scene; lastOutput=cleaned;
-          renderParagraphs(cleaned);
-        })
-        .catch(e => renderParagraphs('Network error: ' + e.message));
-      }
-
-      function renderParagraphs(text) {
-        const resBox = document.getElementById('analysisResult');
-        resBox.innerHTML = '';
-        text.split('\\n\\n').forEach(p => {
-          const para = document.createElement('p');
-          para.className = 'mb-4';
-          para.innerText = p;
-          resBox.appendChild(para);
-        });
-      }
-
-      show('home');
-    </script>
-  </div>
-
+  <!-- Scripts -->
   <script>
-    const password = "prantasdatwanta82#";
-    const input = document.getElementById('passwordInput');
-    const button = document.getElementById('submitPassword');
-    const error = document.getElementById('errorMsg');
-    const app = document.getElementById('mainApp');
-    const gate = document.getElementById('passwordGate');
-
-    button.onclick = () => {
-      if (input.value === password) {
-        gate.remove();
-        app.classList.remove('hidden');
-      } else {
-        error.classList.remove('hidden');
-      }
+    const show = view => {
+      ['home','analyzer','editor'].forEach(v => document.getElementById('view-'+v).classList.add('hidden'));
+      document.getElementById('view-'+view).classList.remove('hidden');
     };
+
+    document.getElementById('navHome').onclick = () => show('home');
+    document.getElementById('navAnalyzer').onclick = () => show('analyzer');
+    document.getElementById('navEditor').onclick = () => show('editor');
+    document.getElementById('toggleTC').onclick = () => document.getElementById('tcPanel').classList.toggle('hidden');
+
+    // Scene Analyzer
+    document.getElementById('analyzeBtn').onclick = () => {
+      const agree = document.getElementById('agreeChk').checked;
+      const scene = document.getElementById('sceneInput').value.trim();
+      const file = document.getElementById('sceneFile');
+      if (!agree) return alert("Accept the Terms & Conditions first.");
+      if (!scene && file.files.length) return file.files[0].text().then(txt => runAnalysis(txt.trim()));
+      runAnalysis(scene);
+    };
+
+    function runAnalysis(scene) {
+      if (scene.length < 10) return alert('Enter at least 10 characters.');
+      const outBox = document.getElementById('analysisOutput');
+      const resBox = document.getElementById('analysisResult');
+      resBox.innerText = 'Analyzing...'; outBox.classList.remove('hidden');
+      fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-user-agreement': 'true' },
+        body: JSON.stringify({ scene })
+      })
+      .then(r => r.json())
+      .then(d => {
+        const cleaned = d.analysis || d.error || '';
+        renderResult(resBox, cleaned);
+      })
+      .catch(e => renderResult(resBox, 'Network error: ' + e.message));
+    }
+
+    // Scene Editor
+    document.getElementById('editBtn').onclick = () => {
+      const agree = document.getElementById('agreeChkEditor').checked;
+      const scene = document.getElementById('sceneInputEditor').value.trim();
+      const file = document.getElementById('sceneFileEditor');
+      if (!agree) return alert("Accept the Terms & Conditions first.");
+      if (!scene && file.files.length) return file.files[0].text().then(txt => runEdit(txt.trim()));
+      runEdit(scene);
+    };
+
+    function runEdit(scene) {
+      if (scene.length < 10) return alert('Enter at least 10 characters.');
+      const outBox = document.getElementById('editOutput');
+      const resBox = document.getElementById('editResult');
+      resBox.innerText = 'Editing...'; outBox.classList.remove('hidden');
+      fetch('https://scenecraft-ai-backend.onrender.com/edit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-user-agreement': 'true' },
+        body: JSON.stringify({ scene })
+      })
+      .then(r => r.json())
+      .then(d => {
+        const cleaned = d.rewrites || d.error || '';
+        renderResult(resBox, cleaned);
+      })
+      .catch(e => renderResult(resBox, 'Network error: ' + e.message));
+    }
+
+    function renderResult(container, text) {
+      container.innerHTML = '';
+      text.split('\n\n').forEach(para => {
+        const p = document.createElement('p');
+        p.className = 'mb-4'; p.innerText = para;
+        container.appendChild(p);
+      });
+    }
+
+    // Start at home
+    show('home');
   </script>
 </body>
 </html>
