@@ -6,17 +6,19 @@
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Password protection before render -->
+  <!-- Strong password protection -->
   <script>
-    const allowed = sessionStorage.getItem('scenecraft_access_granted');
-    if (!allowed) {
-      const pass = prompt("Enter preview password");
-      if (pass !== "prantasdatwanta") {
-        document.write("<h1 style='color:#f00;text-align:center;margin-top:2rem;'>Access Denied</h1>");
-        throw new Error("Unauthorized");
-      } else {
-        sessionStorage.setItem('scenecraft_access_granted', 'yes');
+    const access = sessionStorage.getItem('scenecraft_access_granted');
+    if (!access) {
+      let pass = '';
+      while (pass !== "prantasdatwanta") {
+        pass = prompt("Enter preview password");
+        if (pass === null) {
+          document.write("<h1 style='color:#f00;text-align:center;margin-top:2rem;'>Access Denied</h1>");
+          throw new Error("Access blocked");
+        }
       }
+      sessionStorage.setItem('scenecraft_access_granted', 'yes');
     }
   </script>
 </head>
@@ -55,7 +57,7 @@
           <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
           <p class="mt-2 text-gray-200">Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</p>
         </div>
-        <div class="bg-gray-800 p-6 rounded-lg opacity-100">
+        <div class="bg-gray-800 p-6 rounded-lg">
           <h3 class="font-semibold text-xl text-yellow-300">Scene Editor</h3>
           <p class="mt-2 text-gray-200">AI-assisted rewriting and enhancement suggestions.</p>
         </div>
