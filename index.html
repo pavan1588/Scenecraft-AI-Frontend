@@ -5,53 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SceneCraft AI</title>
   <style>
-    html, body {
+    body {
       background: black;
       color: white;
       margin: 0;
-      padding: 0;
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
     }
-    #mainContent { display: none; }
-    #deniedMessage {
+    #app { display: none; }
+    #access-denied {
       display: none;
       color: red;
       text-align: center;
-      padding-top: 5rem;
+      padding-top: 4rem;
+      font-size: 1.2rem;
     }
   </style>
-  <script>
-    const correctPassword = "prantasdatwanta";
-    const accessGranted = sessionStorage.getItem("scenecraft_access_granted");
-
-    if (!accessGranted) {
-      const userInput = prompt("Enter preview password");
-      if (userInput !== correctPassword) {
-        window.onload = () => {
-          document.getElementById("deniedMessage").style.display = "block";
-        };
-        sessionStorage.removeItem("scenecraft_access_granted");
-      } else {
-        sessionStorage.setItem("scenecraft_access_granted", "yes");
-      }
-    }
-
-    window.onload = () => {
-      if (sessionStorage.getItem("scenecraft_access_granted") === "yes") {
-        document.getElementById("mainContent").style.display = "block";
-      }
-    };
-  </script>
 </head>
 <body>
 
-  <div id="deniedMessage">
+  <div id="access-denied">
     <h1>Access Denied</h1>
     <p>This site is protected. Reload and enter the correct password.</p>
   </div>
 
-  <div id="mainContent">
-    <!-- 🔐 Main Website Content Starts Here -->
+  <div id="app">
+    <!-- 🌟 SCENECRAFT MAIN CONTENT BELOW -->
     <header style="background:#0c1321;padding:1rem 2rem;color:#facc15;display:flex;justify-content:space-between;align-items:center;">
       <h1 style="font-size:1.5rem;font-weight:bold;">SceneCraft AI</h1>
       <nav style="display:flex;gap:1.5rem;font-weight:600;">
@@ -98,5 +76,26 @@
       &copy; SceneCraft AI 2025. All rights reserved.
     </footer>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const password = "prantasdatwanta";
+      const granted = sessionStorage.getItem("scenecraft_access");
+
+      if (granted === "yes") {
+        document.getElementById("app").style.display = "block";
+        return;
+      }
+
+      const entered = prompt("Enter preview password");
+      if (entered === password) {
+        sessionStorage.setItem("scenecraft_access", "yes");
+        document.getElementById("app").style.display = "block";
+      } else {
+        document.getElementById("access-denied").style.display = "block";
+      }
+    });
+  </script>
+
 </body>
 </html>
