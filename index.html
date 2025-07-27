@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SceneCraft AI</title>
-  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       background-color: black;
@@ -24,14 +23,37 @@
       height: 100vh;
       color: red;
       background-color: black;
+      font-size: 20px;
+    }
+    nav {
+      background-color: #111;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li a {
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav h1 {
+      color: gold;
+      font-size: 24px;
     }
   </style>
 </head>
 <body>
+
+  <!-- 🔒 Protected Content -->
   <div id="main-content">
-    <!-- 🎬 Your actual homepage content starts here -->
     <nav>
-      <h1 style="color:gold;">SceneCraft AI</h1>
+      <h1>SceneCraft AI</h1>
       <ul>
         <li><a href="index.html">Scene Analyzer</a></li>
         <li><a href="editor.html">Scene Editor</a></li>
@@ -40,24 +62,32 @@
         <li><a href="pricing.html">Pricing</a></li>
       </ul>
     </nav>
-    <h2>Welcome to SceneCraft AI</h2>
-    <p>SceneCraft AI is your cinematic storytelling partner.</p>
-    <!-- Add the rest of your homepage content here -->
+    <main style="padding: 40px;">
+      <h2>Welcome to SceneCraft AI</h2>
+      <p>SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.</p>
+      <h3>Key Features</h3>
+      <ul>
+        <li><strong>Scene Analyzer</strong> – Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</li>
+        <li><strong>Scene Editor</strong> – AI-assisted rewriting and enhancement suggestions.</li>
+        <li><strong>Full Script Writer</strong> – (Coming soon)</li>
+      </ul>
+    </main>
   </div>
 
+  <!-- 🔐 JS Password Protection -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const correctPassword = "SceneCraft2024";
-      const access = sessionStorage.getItem("accessGranted");
+      const accessGranted = sessionStorage.getItem("accessGranted");
 
-      if (access === "true") {
+      if (accessGranted === "true") {
         document.getElementById("main-content").style.display = "block";
         return;
       }
 
-      const userInput = prompt("This site is protected. Please enter the password:");
+      const password = prompt("This site is protected. Please enter the password:");
 
-      if (userInput === correctPassword) {
+      if (password === correctPassword) {
         sessionStorage.setItem("accessGranted", "true");
         document.getElementById("main-content").style.display = "block";
       } else {
