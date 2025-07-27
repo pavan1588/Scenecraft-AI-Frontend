@@ -1,31 +1,36 @@
-<script>
-  (function () {
-    const allowed = sessionStorage.getItem("scenecraft_access_granted");
-    if (!allowed) {
-      let pass = prompt("Enter preview password");
-      if (pass === null || pass.trim() === "" || pass !== "prantasdatwanta") {
-        document.write(`
-          <html><head><title>Access Denied</title></head>
-          <body style="background:#000;color:#f00;text-align:center;padding-top:3rem;font-family:sans-serif;">
-            <h1>Access Denied</h1>
-            <p>This site is protected. Please reload and enter the correct password.</p>
-          </body></html>
-        `);
-        throw new Error("Unauthorized access");
-      }
-      sessionStorage.setItem("scenecraft_access_granted", "yes");
-    }
-  })();
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>SceneCraft AI</title>
+  <script>
+    const allowed = sessionStorage.getItem("scenecraft_access_granted");
+    if (!allowed) {
+      const input = prompt("Enter preview password");
+      if (input !== "prantasdatwanta") {
+        document.write(`
+          <style>
+            body {
+              background: #000;
+              color: #f00;
+              font-family: sans-serif;
+              text-align: center;
+              padding-top: 5rem;
+            }
+          </style>
+          <h1>Access Denied</h1>
+          <p>This site is protected. Please reload and enter the correct password.</p>
+        `);
+        throw new Error("Unauthorized");
+      } else {
+        sessionStorage.setItem("scenecraft_access_granted", "yes");
+      }
+    }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
 
   <!-- Header -->
@@ -46,12 +51,13 @@
   </header>
 
   <main class="flex-grow">
+
+    <!-- Home -->
     <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
       <p class="text-lg text-gray-300 leading-relaxed text-center">
         SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
       </p>
-
       <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 mx-auto rounded-full mb-6"></div>
 
       <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
@@ -99,6 +105,7 @@
         <p class="mb-3"><strong>Restrictions:</strong> Submission of unlawful, infringing, or offensive content is prohibited.</p>
         <p class="mb-3"><strong>Privacy:</strong> Inputs are processed transiently and not retained beyond the session.</p>
         <p class="mb-3"><strong>Liability:</strong> SceneCraft AI and affiliates disclaim all liability for damages arising from use.</p>
+        <p class="mb-3"><strong>Legal Disclaimer:</strong> This service does not constitute legal, financial, or professional advice. Use at your own risk.</p>
         <p class="mt-4 text-xs text-gray-500">&copy; 2025 SceneCraft AI. All rights reserved.</p>
       </div>
 
@@ -109,6 +116,7 @@
         <div id="analysisResult" class="text-gray-100 space-y-4"></div>
       </div>
     </section>
+
   </main>
 
   <script>
@@ -118,7 +126,6 @@
     };
     document.getElementById('navHome').onclick = () => show('home');
     document.getElementById('navAnalyzer').onclick = () => show('analyzer');
-
     document.getElementById('closeAnalyzer').onclick = () => {
       document.getElementById('sceneInput').value = '';
       document.getElementById('sceneFile').value = '';
@@ -128,7 +135,6 @@
       document.getElementById('analysisResult').innerText = '';
       show('home');
     };
-
     document.getElementById('toggleTC').onclick = () =>
       document.getElementById('tcPanel').classList.toggle('hidden');
 
@@ -153,11 +159,13 @@
         outBox.classList.remove('hidden');
         return;
       }
-      resBox.innerText = 'Analyzing...';
-      outBox.classList.remove('hidden');
+      resBox.innerText = 'Analyzing...'; outBox.classList.remove('hidden');
       fetch('https://scenecraft-ai-backend.onrender.com/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-user-agreement': 'true' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-agreement': 'true'
+        },
         body: JSON.stringify({ scene, save: false })
       })
       .then(r => r.json())
@@ -167,8 +175,7 @@
           .map(l => l.replace(/^[^:]+:\s*/, ''))
           .filter(l => l.trim())
           .join('\n\n');
-        lastScene = scene;
-        lastOutput = cleaned;
+        lastScene = scene; lastOutput = cleaned;
         renderParagraphs(cleaned);
       })
       .catch(e => renderParagraphs('Network error: ' + e.message));
@@ -187,5 +194,6 @@
 
     show('home');
   </script>
+
 </body>
 </html>
