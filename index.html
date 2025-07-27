@@ -1,84 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SceneCraft AI</title>
+  <meta charset="UTF-8">
+  <title>Authenticating...</title>
   <script>
-    // Secure password protection
     (() => {
-      const allowed = sessionStorage.getItem("scenecraft_access_granted");
-      if (!allowed) {
-        const input = prompt("Enter preview password");
-        if (input !== "prantasdatwanta") {
+      const granted = sessionStorage.getItem("scenecraft_access_granted");
+      if (!granted) {
+        const pwd = prompt("Enter preview password");
+        if (pwd !== "prantasdatwanta") {
           document.write(`
-            <!DOCTYPE html>
-            <html>
-              <head><title>Access Denied</title></head>
-              <body style="background:black; color:red; font-family:sans-serif; text-align:center; padding-top:5rem;">
-                <h1>Access Denied</h1>
-                <p>This site is protected. Please reload and enter the correct password.</p>
-              </body>
-            </html>
+            <body style="background:#000;color:#f00;font-family:sans-serif;text-align:center;padding-top:4rem;">
+              <h1>Access Denied</h1>
+              <p>This site is protected. Reload and enter the correct password.</p>
+            </body>
           `);
-          throw new Error("Access denied: Incorrect password");
+          throw new Error("Access denied");
         }
         sessionStorage.setItem("scenecraft_access_granted", "yes");
       }
+      // Redirect to the real homepage
+      location.href = "/main.html";
     })();
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
-
-  <!-- Header -->
-  <header class="bg-gray-900/90 backdrop-blur sticky top-0 z-20">
-    <div class="max-w-5xl mx-auto flex items-center p-4">
-      <a href="#" id="navHome" class="text-3xl font-extrabold text-yellow-400 mr-8">SceneCraft AI</a>
-      <nav class="flex space-x-6 flex-1">
-        <a href="#" id="navAnalyzer" class="text-yellow-300 border-b-2 border-yellow-300 pb-1">Scene Analyzer</a>
-        <a href="/editor.html" class="hover:text-yellow-300">Scene Editor</a>
-        <a href="#" class="hover:text-yellow-300">Full Script Writer</a>
-        <a href="#" class="hover:text-yellow-300">How it Works</a>
-        <a href="#" class="hover:text-yellow-300">Pricing</a>
-      </nav>
-      <button id="navLogin" class="ml-8 bg-yellow-400 text-gray-900 py-2 px-4 rounded-lg whitespace-nowrap">
-        Log In / Sign Up
-      </button>
-    </div>
-  </header>
-
-  <main class="flex-grow">
-    <!-- Home -->
-    <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
-      <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
-      <p class="text-lg text-gray-300 leading-relaxed text-center">
-        SceneCraft AI is your cinematic storytelling partner—melding AI expertise with filmmaker craft to deliver instant, actionable feedback and development assistance on your scenes.
-      </p>
-
-      <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 mx-auto rounded-full mb-6"></div>
-
-      <h2 class="text-2xl font-semibold text-yellow-300">Key Features</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-gray-800 p-6 rounded-lg">
-          <h3 class="font-semibold text-xl text-yellow-300">Scene Analyzer</h3>
-          <p class="mt-2 text-gray-200">Deep insights on pacing, character stakes, dialogue subtext, and visual grammar.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-lg">
-          <h3 class="font-semibold text-xl text-yellow-300">Scene Editor</h3>
-          <p class="mt-2 text-gray-200">AI-assisted rewriting and enhancement suggestions.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-          <h3 class="font-semibold text-xl">Full Script Writer</h3>
-          <p class="mt-2 text-gray-200">(Coming Soon) Craft complete screenplays with structure and style guidance.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-lg opacity-60">
-          <h3 class="font-semibold text-xl">Collaborative Dashboard</h3>
-          <p class="mt-2 text-gray-200">Save, compare, and export your analyses in one intuitive interface.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
+<body>
+  <noscript>
+    <h2 style="color:red;text-align:center;">This site requires JavaScript enabled.</h2>
+  </noscript>
 </body>
 </html>
