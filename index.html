@@ -1,3 +1,23 @@
+<script>
+  (function () {
+    const allowed = sessionStorage.getItem("scenecraft_access_granted");
+    if (!allowed) {
+      let pass = prompt("Enter preview password");
+      if (pass === null || pass.trim() === "" || pass !== "prantasdatwanta") {
+        document.write(`
+          <html><head><title>Access Denied</title></head>
+          <body style="background:#000;color:#f00;text-align:center;padding-top:3rem;font-family:sans-serif;">
+            <h1>Access Denied</h1>
+            <p>This site is protected. Please reload and enter the correct password.</p>
+          </body></html>
+        `);
+        throw new Error("Unauthorized access");
+      }
+      sessionStorage.setItem("scenecraft_access_granted", "yes");
+    }
+  })();
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,22 +25,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>SceneCraft AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Strong password protection -->
-  <script>
-    const access = sessionStorage.getItem('scenecraft_access_granted');
-    if (!access) {
-      let pass = '';
-      while (pass !== "prantasdatwanta") {
-        pass = prompt("Enter preview password");
-        if (pass === null) {
-          document.write("<h1 style='color:#f00;text-align:center;margin-top:2rem;'>Access Denied</h1>");
-          throw new Error("Access blocked");
-        }
-      }
-      sessionStorage.setItem('scenecraft_access_granted', 'yes');
-    }
-  </script>
 </head>
 <body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
 
@@ -42,7 +46,6 @@
   </header>
 
   <main class="flex-grow">
-    <!-- Home Section -->
     <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
       <p class="text-lg text-gray-300 leading-relaxed text-center">
@@ -77,12 +80,7 @@
       <button id="closeAnalyzer" class="absolute top-4 right-4 text-gray-400 hover:text-gray-100">✕</button>
       <h2 class="text-2xl font-bold text-yellow-300 text-center">SceneCraft Analysis</h2>
 
-      <textarea
-        id="sceneInput"
-        rows="6"
-        class="w-full p-4 bg-gray-800 rounded text-gray-100"
-        placeholder="Paste your scene here..."
-      ></textarea>
+      <textarea id="sceneInput" rows="6" class="w-full p-4 bg-gray-800 rounded text-gray-100" placeholder="Paste your scene here..."></textarea>
 
       <div class="flex items-center space-x-4">
         <input type="file" id="sceneFile" accept=".txt,.pdf" class="text-gray-400"/>
@@ -94,7 +92,6 @@
         </label>
       </div>
 
-      <!-- Terms & Conditions -->
       <div id="tcPanel" class="hidden bg-gray-800 p-4 rounded max-h-48 overflow-y-auto text-gray-200">
         <h3 class="font-semibold mb-2">Terms & Conditions</h3>
         <p class="mb-3"><strong>User Agreement:</strong> You confirm you hold all rights to any content you submit.</p>
@@ -102,13 +99,10 @@
         <p class="mb-3"><strong>Restrictions:</strong> Submission of unlawful, infringing, or offensive content is prohibited.</p>
         <p class="mb-3"><strong>Privacy:</strong> Inputs are processed transiently and not retained beyond the session.</p>
         <p class="mb-3"><strong>Liability:</strong> SceneCraft AI and affiliates disclaim all liability for damages arising from use.</p>
-        <p class="mb-3"><strong>Legal Disclaimer:</strong> This service does not constitute legal, financial, or professional advice. Use at your own risk.</p>
         <p class="mt-4 text-xs text-gray-500">&copy; 2025 SceneCraft AI. All rights reserved.</p>
       </div>
 
-      <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-3 rounded-lg font-semibold">
-        Analyze
-      </button>
+      <button id="analyzeBtn" class="w-full bg-yellow-400 text-gray-900 py-3 rounded-lg font-semibold">Analyze</button>
 
       <div id="analysisOutput" class="hidden bg-gray-800 p-6 rounded-lg mt-6">
         <h3 class="font-semibold text-yellow-300 mb-4">Analysis & Suggestions</h3>
@@ -119,7 +113,7 @@
 
   <script>
     const show = v => {
-      ['home','analyzer'].forEach(n=>document.getElementById('view-'+n).classList.add('hidden'));
+      ['home','analyzer'].forEach(n => document.getElementById('view-'+n).classList.add('hidden'));
       document.getElementById('view-'+v).classList.remove('hidden');
     };
     document.getElementById('navHome').onclick = () => show('home');
