@@ -1,31 +1,32 @@
-<!-- 🔐 PASSWORD GATE (DO NOT MOVE BELOW) -->
-<script>
-  (() => {
-    const granted = sessionStorage.getItem("scenecraft_access_granted");
-    if (!granted) {
-      const password = prompt("Enter preview password");
-      if (password !== "prantasdatwanta") {
-        document.write(`
-          <!DOCTYPE html>
-          <html><head><title>Access Denied</title></head>
-          <body style="background:#000;color:#f00;font-family:sans-serif;text-align:center;padding-top:4rem;">
-            <h1>Access Denied</h1>
-            <p>This site is protected. Reload and enter the correct password.</p>
-          </body></html>
-        `);
-        throw new Error("Blocked unauthorized access");
-      }
-      sessionStorage.setItem("scenecraft_access_granted", "yes");
-    }
-  })();
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SceneCraft AI</title>
+  <script>
+    // Secure password protection
+    (() => {
+      const allowed = sessionStorage.getItem("scenecraft_access_granted");
+      if (!allowed) {
+        const input = prompt("Enter preview password");
+        if (input !== "prantasdatwanta") {
+          document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head><title>Access Denied</title></head>
+              <body style="background:black; color:red; font-family:sans-serif; text-align:center; padding-top:5rem;">
+                <h1>Access Denied</h1>
+                <p>This site is protected. Please reload and enter the correct password.</p>
+              </body>
+            </html>
+          `);
+          throw new Error("Access denied: Incorrect password");
+        }
+        sessionStorage.setItem("scenecraft_access_granted", "yes");
+      }
+    })();
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-gray-100">
@@ -48,7 +49,6 @@
   </header>
 
   <main class="flex-grow">
-
     <!-- Home -->
     <section id="view-home" class="p-6 max-w-5xl mx-auto space-y-6">
       <h1 class="text-4xl font-extrabold text-yellow-400 text-center">Welcome to SceneCraft AI</h1>
@@ -74,7 +74,7 @@
         </div>
         <div class="bg-gray-800 p-6 rounded-lg opacity-60">
           <h3 class="font-semibold text-xl">Collaborative Dashboard</h3>
-          <p class="mt-2 text-gray-200">(Coming Soon) Save, compare, and export your analyses in one interface.</p>
+          <p class="mt-2 text-gray-200">Save, compare, and export your analyses in one intuitive interface.</p>
         </div>
       </div>
     </section>
